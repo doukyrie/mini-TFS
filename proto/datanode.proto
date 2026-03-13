@@ -1,0 +1,42 @@
+syntax = "proto3";
+package minitfs;
+
+message WriteBlockRequest {
+    uint64 block_id = 1;
+    uint64 file_id  = 2;
+    bytes  data     = 3;
+    bool   is_last  = 4;
+}
+message WriteBlockResponse {
+    int32  status  = 1;
+    string message = 2;
+    int64  offset  = 3;
+    int64  size    = 4;
+}
+
+message ReadBlockRequest {
+    uint64 block_id = 1;
+    uint64 file_id  = 2;
+    int64  offset   = 3;
+    int64  size     = 4;
+}
+message ReadBlockResponse {
+    int32  status  = 1;
+    string message = 2;
+    bytes  data    = 3;
+}
+
+message DeleteBlockRequest {
+    uint64 block_id = 1;
+    uint64 file_id  = 2;
+}
+message DeleteBlockResponse {
+    int32  status  = 1;
+    string message = 2;
+}
+
+service DataNodeService {
+    rpc WriteBlock  (stream WriteBlockRequest) returns (WriteBlockResponse);
+    rpc ReadBlock   (ReadBlockRequest)         returns (stream ReadBlockResponse);
+    rpc DeleteBlock (DeleteBlockRequest)       returns (DeleteBlockResponse);
+}

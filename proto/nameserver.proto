@@ -1,0 +1,80 @@
+syntax = "proto3";
+package minitfs;
+
+// ---- 公共类型 ----
+message BlockLocation {
+    uint64 block_id      = 1;
+    string datanode_id   = 2;
+    string datanode_ip   = 3;
+    int32  datanode_port = 4;
+    int64  offset        = 5;
+    int64  size          = 6;
+}
+
+// ---- 文件操作 ----
+message AllocateBlockRequest {
+    int64 file_size = 1;
+}
+message AllocateBlockResponse {
+    int32         status   = 1;
+    string        message  = 2;
+    BlockLocation location = 3;
+    uint64        file_id  = 4;
+}
+
+message GetBlockLocationRequest {
+    uint64 file_id = 1;
+}
+message GetBlockLocationResponse {
+    int32         status   = 1;
+    string        message  = 2;
+    BlockLocation location = 3;
+}
+
+message CommitFileRequest {
+    uint64        file_id  = 1;
+    BlockLocation location = 2;
+}
+message CommitFileResponse {
+    int32  status  = 1;
+    string message = 2;
+}
+
+message DeleteFileRequest {
+    uint64 file_id = 1;
+}
+message DeleteFileResponse {
+    int32  status  = 1;
+    string message = 2;
+}
+
+// ---- DataNode 管理 ----
+message HeartbeatRequest {
+    string datanode_id    = 1;
+    string ip             = 2;
+    int32  port           = 3;
+    int64  available_cap  = 4;
+    int32  block_count    = 5;
+}
+message HeartbeatResponse {
+    int32  status  = 1;
+    string message = 2;
+}
+
+message BlockReportRequest {
+    string          datanode_id = 1;
+    repeated uint64 block_ids   = 2;
+}
+message BlockReportResponse {
+    int32  status  = 1;
+    string message = 2;
+}
+
+service NameServerService {
+    rpc AllocateBlock    (AllocateBlockRequest)    returns (AllocateBlockResponse);
+    rpc GetBlockLocation (GetBlockLocationRequest) returns (GetBlockLocationResponse);
+    rpc CommitFile       (CommitFileRequest)       returns (CommitFileResponse);
+    rpc DeleteFile       (DeleteFileRequest)       returns (DeleteFileResponse);
+    rpc Heartbeat        (HeartbeatRequest)        returns (HeartbeatResponse);
+    rpc BlockReport      (BlockReportRequest)      returns (BlockReportResponse);
+}
