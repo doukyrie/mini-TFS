@@ -13,27 +13,30 @@ message BlockLocation {
 
 // ---- 文件操作 ----
 message AllocateBlockRequest {
-    int64 file_size = 1;
+    int64 file_size    = 1;
+    int32 replica_num  = 2;  // 副本数，默认 1
 }
 message AllocateBlockResponse {
-    int32         status   = 1;
-    string        message  = 2;
-    BlockLocation location = 3;
-    uint64        file_id  = 4;
+    int32                  status    = 1;
+    string                 message   = 2;
+    uint64                 file_id   = 3;
+    uint64                 block_id  = 4;
+    repeated BlockLocation locations = 5;  // 所有副本节点列表
 }
 
 message GetBlockLocationRequest {
     uint64 file_id = 1;
 }
 message GetBlockLocationResponse {
-    int32         status   = 1;
-    string        message  = 2;
-    BlockLocation location = 3;
+    int32                  status    = 1;
+    string                 message   = 2;
+    repeated BlockLocation locations = 3;  // 所有存活副本
 }
 
 message CommitFileRequest {
-    uint64        file_id  = 1;
-    BlockLocation location = 2;
+    uint64                 file_id   = 1;
+    uint64                 block_id  = 2;
+    repeated BlockLocation locations = 3;  // 实际写成功的副本列表
 }
 message CommitFileResponse {
     int32  status  = 1;
@@ -50,11 +53,12 @@ message DeleteFileResponse {
 
 // ---- DataNode 管理 ----
 message HeartbeatRequest {
-    string datanode_id    = 1;
-    string ip             = 2;
-    int32  port           = 3;
-    int64  available_cap  = 4;
-    int32  block_count    = 5;
+    string datanode_id        = 1;
+    string ip                 = 2;
+    int32  port               = 3;
+    int64  available_cap      = 4;
+    int32  block_count        = 5;
+    int32  active_connections = 6;  // 当前活跃连接数（用于负载均衡）
 }
 message HeartbeatResponse {
     int32  status  = 1;

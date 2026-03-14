@@ -4,7 +4,7 @@
 
 static void print_usage(const char* prog) {
     std::cout << "Usage:\n"
-              << "  " << prog << " upload   <ns_addr> <local_file>\n"
+              << "  " << prog << " upload   <ns_addr> <local_file> [replicas=1]\n"
               << "  " << prog << " download <ns_addr> <file_id> <local_file>\n"
               << "  " << prog << " delete   <ns_addr> <file_id>\n";
 }
@@ -18,7 +18,8 @@ int main(int argc, char** argv) {
 
     if (cmd == "upload") {
         if (argc < 4) { print_usage(argv[0]); return 1; }
-        int64_t fid = client.upload_file(argv[3]);
+        int replicas = (argc >= 5) ? std::stoi(argv[4]) : 1;
+        int64_t fid = client.upload_file(argv[3], replicas);
         if (fid < 0) return 1;
         std::cout << "file_id: " << fid << "\n";
 

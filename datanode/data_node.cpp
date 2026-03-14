@@ -4,6 +4,8 @@
 #include <thread>
 #include <chrono>
 #include <sys/stat.h>
+#include <sys/statvfs.h>
+#include <zlib.h>
 
 namespace minitfs {
 
@@ -39,7 +41,13 @@ void DataNodeServiceImpl::start_heartbeat() {
             req.set_datanode_id(self_id_);
             req.set_ip(self_ip_);
             req.set_port(self_port_);
-            req.set_available_cap(1024LL * 1024 * 1024); // 简化：固定 1GB
+            struct statvfs vfs_stat;
+            int64_t avail_cap = 1024LL * 1024 * 1024; // fallback
+            if (statvfs(base_path_.c_str(), &vfs_stat) == 0) {
+                avail_cap = static_cast<int64_t>(vfs_stat.f_bavail) * static_cast<int64_t>(vfs_stat.f_frsize);
+            }
+            req.set_available_cap(avail_cap);
+            req.set_active_connections(active_connections_.load());
             {
                 std::lock_guard<std::mutex> lk(mu_);
                 req.set_block_count(static_cast<int32_t>(blocks_.size()));
@@ -57,45 +65,48 @@ void DataNodeServiceImpl::start_heartbeat() {
     });
 }
 
-BlockContext* DataNodeServiceImpl::get_or_create_block(uint64_t block_id) {
+std::shared_ptr<BlockContext> DataNodeServiceImpl::get_or_create_block(uint64_t block_id) {
     // 调用前需持有 mu_
     auto it = blocks_.find(block_id);
-    if (it != blocks_.end()) return &it->second;
+    if (it != blocks_.end()) return it->second;
 
-    BlockContext ctx;
-    ctx.block_id = static_cast<uint32_t>(block_id);
+    auto ctx = std::make_shared<BlockContext>();
+    ctx->block_id = static_cast<uint32_t>(block_id);
 
     // 主块文件路径
     std::ostringstream oss;
     oss << base_path_ << "/mainblock/" << block_id;
-    ctx.main_block_path = oss.str();
+    ctx->main_block_path = oss.str();
 
     // 创建主块文件
-    ctx.main_block = std::make_unique<qiniu::largefile::FileOperation>(
-        ctx.main_block_path, O_RDWR | O_LARGEFILE | O_CREAT);
-    ctx.main_block->ftruncate_file(kMainBlockSz);
+    ctx->main_block = std::make_unique<qiniu::largefile::FileOperation>(
+        ctx->main_block_path, O_RDWR | O_LARGEFILE | O_CREAT);
+    ctx->main_block->ftruncate_file(kMainBlockSz);
 
     // 创建索引
-    ctx.index = std::make_unique<qiniu::largefile::IndexHandle>(base_path_, ctx.block_id);
+    ctx->index = std::make_unique<qiniu::largefile::IndexHandle>(base_path_, ctx->block_id);
 
     // 尝试 load，失败则 create
-    int ret = ctx.index->load(ctx.block_id, kBucketSize, kMMapOpt);
+    int ret = ctx->index->load(ctx->block_id, kBucketSize, kMMapOpt);
     if (ret < 0) {
-        ret = ctx.index->create(ctx.block_id, kBucketSize, kMMapOpt);
+        ret = ctx->index->create(ctx->block_id, kBucketSize, kMMapOpt);
         if (ret < 0) {
             std::cerr << "[DataNode] create index failed for block " << block_id << "\n";
             return nullptr;
         }
     }
 
-    blocks_[block_id] = std::move(ctx);
-    return &blocks_[block_id];
+    blocks_[block_id] = ctx;
+    return ctx;
 }
 
 grpc::Status DataNodeServiceImpl::WriteBlock(
         grpc::ServerContext*,
         grpc::ServerReader<WriteBlockRequest>* reader,
         WriteBlockResponse* resp) {
+
+    ++active_connections_;
+    struct Guard { std::atomic<int32_t>& c; ~Guard(){ --c; } } g{active_connections_};
 
     WriteBlockRequest req;
     std::vector<char> buf;
@@ -116,16 +127,25 @@ grpc::Status DataNodeServiceImpl::WriteBlock(
         return grpc::Status::OK;
     }
 
-    std::lock_guard<std::mutex> lk(mu_);
-    BlockContext* bctx = get_or_create_block(block_id);
+    std::shared_ptr<BlockContext> bctx;
+    {
+        std::lock_guard<std::mutex> lk(mu_);
+        bctx = get_or_create_block(block_id);
+    }
     if (!bctx) {
         resp->set_status(-1);
         resp->set_message("failed to open block");
         return grpc::Status::OK;
     }
 
+    std::lock_guard<std::mutex> blk_lk(bctx->mu);
+
     int32_t offset = bctx->index->get_index_header()->data_file_offset;
     int32_t size   = static_cast<int32_t>(buf.size());
+
+    // 计算 CRC32
+    uint32_t crc = static_cast<uint32_t>(
+        crc32(0, reinterpret_cast<const Bytef*>(buf.data()), buf.size()));
 
     int ret = bctx->main_block->pwrite_file(buf.data(), size, offset);
     if (ret < 0) {
@@ -139,6 +159,7 @@ grpc::Status DataNodeServiceImpl::WriteBlock(
     meta.set_file_id(file_id);
     meta.set_offset(offset);
     meta.set_size(size);
+    meta.set_crc32(crc);
 
     ret = bctx->index->write_segment_meta(meta.get_key(), meta);
     if (ret < 0) {
@@ -155,6 +176,7 @@ grpc::Status DataNodeServiceImpl::WriteBlock(
     resp->set_message("ok");
     resp->set_offset(offset);
     resp->set_size(size);
+    resp->set_crc32(crc);
 
     std::cout << "[DataNode] WriteBlock: block=" << block_id
               << " file=" << file_id
@@ -167,8 +189,14 @@ grpc::Status DataNodeServiceImpl::ReadBlock(
         const ReadBlockRequest* req,
         grpc::ServerWriter<ReadBlockResponse>* writer) {
 
-    std::lock_guard<std::mutex> lk(mu_);
-    BlockContext* bctx = get_or_create_block(req->block_id());
+    ++active_connections_;
+    struct Guard { std::atomic<int32_t>& c; ~Guard(){ --c; } } g{active_connections_};
+
+    std::shared_ptr<BlockContext> bctx;
+    {
+        std::lock_guard<std::mutex> lk(mu_);
+        bctx = get_or_create_block(req->block_id());
+    }
     if (!bctx) {
         ReadBlockResponse resp;
         resp.set_status(-1);
@@ -176,6 +204,8 @@ grpc::Status DataNodeServiceImpl::ReadBlock(
         writer->Write(resp);
         return grpc::Status::OK;
     }
+
+    std::lock_guard<std::mutex> blk_lk(bctx->mu);
 
     // 从索引获取 offset/size
     qiniu::largefile::MetaInfo meta;
@@ -190,10 +220,12 @@ grpc::Status DataNodeServiceImpl::ReadBlock(
 
     int32_t offset = meta.get_offset();
     int32_t size   = meta.get_size();
+    uint32_t stored_crc = meta.get_crc32();
 
     // 分块流式返回，每次最多 1MB
     const int32_t chunk = 1024 * 1024;
     int32_t sent = 0;
+    uLong running_crc = crc32(0L, Z_NULL, 0);
     while (sent < size) {
         int32_t to_read = std::min(chunk, size - sent);
         std::vector<char> buf(to_read);
@@ -205,11 +237,24 @@ grpc::Status DataNodeServiceImpl::ReadBlock(
             writer->Write(resp);
             return grpc::Status::OK;
         }
+        running_crc = crc32(running_crc, reinterpret_cast<const Bytef*>(buf.data()), to_read);
         ReadBlockResponse resp;
         resp.set_status(0);
         resp.set_data(buf.data(), to_read);
-        writer->Write(resp);
         sent += to_read;
+        if (sent >= size) {
+            // 最后一个 chunk：验证并携带 CRC32
+            if (stored_crc != 0 && static_cast<uint32_t>(running_crc) != stored_crc) {
+                std::cerr << "[DataNode] CRC32 mismatch on read: block=" << req->block_id()
+                          << " file=" << req->file_id() << "\n";
+                resp.set_status(-1);
+                resp.set_message("CRC32 mismatch");
+                writer->Write(resp);
+                return grpc::Status::OK;
+            }
+            resp.set_crc32(stored_crc);
+        }
+        writer->Write(resp);
     }
 
     std::cout << "[DataNode] ReadBlock: block=" << req->block_id()
@@ -222,13 +267,18 @@ grpc::Status DataNodeServiceImpl::DeleteBlock(
         const DeleteBlockRequest* req,
         DeleteBlockResponse* resp) {
 
-    std::lock_guard<std::mutex> lk(mu_);
-    BlockContext* bctx = get_or_create_block(req->block_id());
+    std::shared_ptr<BlockContext> bctx;
+    {
+        std::lock_guard<std::mutex> lk(mu_);
+        bctx = get_or_create_block(req->block_id());
+    }
     if (!bctx) {
         resp->set_status(-1);
         resp->set_message("block not found");
         return grpc::Status::OK;
     }
+
+    std::lock_guard<std::mutex> blk_lk(bctx->mu);
 
     int ret = bctx->index->delete_segment_meta(req->file_id());
     if (ret < 0) {

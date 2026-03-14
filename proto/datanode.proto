@@ -12,6 +12,7 @@ message WriteBlockResponse {
     string message = 2;
     int64  offset  = 3;
     int64  size    = 4;
+    uint32 crc32   = 5;  // DataNode 计算的整体 CRC32
 }
 
 message ReadBlockRequest {
@@ -24,6 +25,7 @@ message ReadBlockResponse {
     int32  status  = 1;
     string message = 2;
     bytes  data    = 3;
+    uint32 crc32   = 4;  // 最后一个 chunk 携带整体 CRC32
 }
 
 message DeleteBlockRequest {

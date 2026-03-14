@@ -93,6 +93,7 @@ namespace qiniu
             }location;
 
             int32_t next_meta;  //下一个块的哈希地址
+            uint32_t crc32;     //数据校验值
 
         public:
             //无参构造
@@ -129,6 +130,7 @@ namespace qiniu
                 this->location.offset = meta_info.get_offset();
                 this->location.size = meta_info.get_size();
                 this->next_meta = meta_info.get_next_meta();
+                this->crc32 = meta_info.get_crc32();
 
                 return *this;
             }
@@ -143,6 +145,7 @@ namespace qiniu
                 this->location.offset = meta_info.get_offset();
                 this->location.size = meta_info.get_size();
                 this->next_meta = meta_info.get_next_meta();
+                this->crc32 = meta_info.get_crc32();
 
                 return *this;
             }
@@ -207,6 +210,9 @@ namespace qiniu
                 this->next_meta = next_meta;
             }
 
+            uint32_t get_crc32() const { return this->crc32; }
+            void set_crc32(uint32_t v) { this->crc32 = v; }
+
 
         private:
             void init()
@@ -215,6 +221,7 @@ namespace qiniu
                 this->location.offset = 0;
                 this->location.size = 0;
                 this->next_meta = 0;
+                this->crc32 = 0;
             }
         };
     }

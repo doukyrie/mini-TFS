@@ -11,8 +11,8 @@ class TfsClient {
 public:
     explicit TfsClient(const std::string& ns_addr);
 
-    // 上传文件，返回 file_id（>0 成功，<0 失败）
-    int64_t upload_file(const std::string& local_path);
+    // 上传文件，replica_num 为副本数（默认 1），返回 file_id（失败返回 -1）
+    int64_t upload_file(const std::string& local_path, int replica_num = 1);
 
     // 下载文件到 local_path，返回 0 成功
     int download_file(uint64_t file_id, const std::string& local_path);

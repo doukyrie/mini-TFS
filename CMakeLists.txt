@@ -10,32 +10,10 @@ list(APPEND CMAKE_PREFIX_PATH "$ENV{HOME}/.local")
 # ---- 查找依赖 ----
 find_package(Protobuf CONFIG REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
+find_package(ZLIB REQUIRED)
 
-# ---- Proto 代码生成 ----
-set(PROTO_DIR "${CMAKE_SOURCE_DIR}/proto")
-set(PROTO_OUT "${CMAKE_BINARY_DIR}/proto_gen")
-file(MAKE_DIRECTORY ${PROTO_OUT})
-
-# 获取 grpc_cpp_plugin 路径
-get_target_property(GRPC_CPP_PLUGIN gRPC::grpc_cpp_plugin LOCATION)
-
-foreach(PROTO nameserver datanode)
-    add_custom_command(
-        OUTPUT
-            "${PROTO_OUT}/${PROTO}.pb.cc"
-            "${PROTO_OUT}/${PROTO}.pb.h"
-            "${PROTO_OUT}/${PROTO}.grpc.pb.cc"
-            "${PROTO_OUT}/${PROTO}.grpc.pb.h"
-        COMMAND ${Protobuf_PROTOC_EXECUTABLE}
-            --proto_path=${PROTO_DIR}
-            --cpp_out=${PROTO_OUT}
-            --grpc_out=${PROTO_OUT}
-            --plugin=protoc-gen-grpc=${GRPC_CPP_PLUGIN}
-            ${PROTO_DIR}/${PROTO}.proto
-        DEPENDS ${PROTO_DIR}/${PROTO}.proto
-        COMMENT "Generating proto: ${PROTO}"
-    )
-endforeach()
+# ---- Proto 预生成文件（手动运行 protoc 生成到 generated/）----
+set(PROTO_OUT "${CMAKE_SOURCE_DIR}/generated")
 
 add_library(proto_gen STATIC
     ${PROTO_OUT}/nameserver.pb.cc
@@ -73,7 +51,7 @@ add_executable(datanode
     datanode/data_node.cpp
 )
 target_include_directories(datanode PRIVATE datanode)
-target_link_libraries(datanode PRIVATE proto_gen storage)
+target_link_libraries(datanode PRIVATE proto_gen storage ZLIB::ZLIB)
 
 # ---- client ----
 add_executable(client
@@ -81,4 +59,4 @@ add_executable(client
     client/tfs_client.cpp
 )
 target_include_directories(client PRIVATE client)
-target_link_libraries(client PRIVATE proto_gen)
+target_link_libraries(client PRIVATE proto_gen ZLIB::ZLIB)

@@ -11,11 +11,14 @@
 #include "../storage/common.h"
 #include "../storage/file_op.h"
 #include "../storage/index_handle.h"
+#include <thread>
+#include <atomic>
 
 namespace minitfs {
 
 // 每个 block 的上下文：持有 IndexHandle + 主块文件操作
 struct BlockContext {
+    std::mutex mu;   // 每个 block 独立的锁
     std::unique_ptr<qiniu::largefile::IndexHandle>   index;
     std::unique_ptr<qiniu::largefile::FileOperation> main_block;
     std::string main_block_path;
@@ -50,21 +53,22 @@ public:
     void start_heartbeat();
 
 private:
-    BlockContext* get_or_create_block(uint64_t block_id);
+    std::shared_ptr<BlockContext> get_or_create_block(uint64_t block_id);
 
     std::string base_path_;
     std::string self_id_;
     std::string self_ip_;
     int32_t     self_port_;
 
-    std::mutex                                          mu_;
-    std::unordered_map<uint64_t, BlockContext>          blocks_;
+    std::mutex                                                      mu_;
+    std::unordered_map<uint64_t, std::shared_ptr<BlockContext>>     blocks_;
 
     std::shared_ptr<grpc::Channel>                      ns_channel_;
     std::unique_ptr<NameServerService::Stub>            ns_stub_;
 
-    std::atomic<bool> running_{true};
-    std::thread       heartbeat_thread_;
+    std::atomic<bool>    running_{true};
+    std::thread          heartbeat_thread_;
+    std::atomic<int32_t> active_connections_{0}; // 当前活跃写/读请求数
 
     static const qiniu::largefile::MMapOption kMMapOpt;
     static const int32_t kBucketSize  = 1000;
