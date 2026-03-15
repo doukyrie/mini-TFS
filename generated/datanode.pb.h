@@ -53,6 +53,14 @@ extern "C" {
 extern const ::google::protobuf::internal::DescriptorTable descriptor_table_datanode_2eproto;
 }  // extern "C"
 namespace minitfs {
+class CopyBlockRequest;
+struct CopyBlockRequestDefaultTypeInternal;
+extern CopyBlockRequestDefaultTypeInternal _CopyBlockRequest_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull CopyBlockRequest_class_data_;
+class CopyBlockResponse;
+struct CopyBlockResponseDefaultTypeInternal;
+extern CopyBlockResponseDefaultTypeInternal _CopyBlockResponse_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull CopyBlockResponse_class_data_;
 class DeleteBlockRequest;
 struct DeleteBlockRequestDefaultTypeInternal;
 extern DeleteBlockRequestDefaultTypeInternal _DeleteBlockRequest_default_instance_;
@@ -1439,6 +1447,506 @@ class DeleteBlockRequest final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull DeleteBlockRequest_class_data_;
+// -------------------------------------------------------------------
+
+class CopyBlockResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:minitfs.CopyBlockResponse) */ {
+ public:
+  inline CopyBlockResponse() : CopyBlockResponse(nullptr) {}
+  ~CopyBlockResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CopyBlockResponse* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CopyBlockResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CopyBlockResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline CopyBlockResponse(const CopyBlockResponse& from) : CopyBlockResponse(nullptr, from) {}
+  inline CopyBlockResponse(CopyBlockResponse&& from) noexcept
+      : CopyBlockResponse(nullptr, ::std::move(from)) {}
+  inline CopyBlockResponse& operator=(const CopyBlockResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CopyBlockResponse& operator=(CopyBlockResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CopyBlockResponse& default_instance() {
+    return *reinterpret_cast<const CopyBlockResponse*>(
+        &_CopyBlockResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(CopyBlockResponse& a, CopyBlockResponse& b) { a.Swap(&b); }
+  inline void Swap(CopyBlockResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CopyBlockResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CopyBlockResponse* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CopyBlockResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CopyBlockResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CopyBlockResponse& from) { CopyBlockResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CopyBlockResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "minitfs.CopyBlockResponse"; }
+
+ protected:
+  explicit CopyBlockResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CopyBlockResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CopyBlockResponse& from);
+  CopyBlockResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CopyBlockResponse&& from) noexcept
+      : CopyBlockResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMessageFieldNumber = 2,
+    kOffsetFieldNumber = 3,
+    kStatusFieldNumber = 1,
+    kCrc32FieldNumber = 5,
+    kSizeFieldNumber = 4,
+  };
+  // string message = 2;
+  void clear_message() ;
+  const ::std::string& message() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_message(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_message();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_message();
+  void set_allocated_message(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_message() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_message(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_message();
+
+  public:
+  // int64 offset = 3;
+  void clear_offset() ;
+  ::int64_t offset() const;
+  void set_offset(::int64_t value);
+
+  private:
+  ::int64_t _internal_offset() const;
+  void _internal_set_offset(::int64_t value);
+
+  public:
+  // int32 status = 1;
+  void clear_status() ;
+  ::int32_t status() const;
+  void set_status(::int32_t value);
+
+  private:
+  ::int32_t _internal_status() const;
+  void _internal_set_status(::int32_t value);
+
+  public:
+  // uint32 crc32 = 5;
+  void clear_crc32() ;
+  ::uint32_t crc32() const;
+  void set_crc32(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_crc32() const;
+  void _internal_set_crc32(::uint32_t value);
+
+  public:
+  // int64 size = 4;
+  void clear_size() ;
+  ::int64_t size() const;
+  void set_size(::int64_t value);
+
+  private:
+  ::int64_t _internal_size() const;
+  void _internal_set_size(::int64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:minitfs.CopyBlockResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<3, 5,
+                                   0, 41,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CopyBlockResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr message_;
+    ::int64_t offset_;
+    ::int32_t status_;
+    ::uint32_t crc32_;
+    ::int64_t size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_datanode_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull CopyBlockResponse_class_data_;
+// -------------------------------------------------------------------
+
+class CopyBlockRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:minitfs.CopyBlockRequest) */ {
+ public:
+  inline CopyBlockRequest() : CopyBlockRequest(nullptr) {}
+  ~CopyBlockRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CopyBlockRequest* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CopyBlockRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CopyBlockRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline CopyBlockRequest(const CopyBlockRequest& from) : CopyBlockRequest(nullptr, from) {}
+  inline CopyBlockRequest(CopyBlockRequest&& from) noexcept
+      : CopyBlockRequest(nullptr, ::std::move(from)) {}
+  inline CopyBlockRequest& operator=(const CopyBlockRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CopyBlockRequest& operator=(CopyBlockRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CopyBlockRequest& default_instance() {
+    return *reinterpret_cast<const CopyBlockRequest*>(
+        &_CopyBlockRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(CopyBlockRequest& a, CopyBlockRequest& b) { a.Swap(&b); }
+  inline void Swap(CopyBlockRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CopyBlockRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CopyBlockRequest* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CopyBlockRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CopyBlockRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CopyBlockRequest& from) { CopyBlockRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CopyBlockRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "minitfs.CopyBlockRequest"; }
+
+ protected:
+  explicit CopyBlockRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CopyBlockRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CopyBlockRequest& from);
+  CopyBlockRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CopyBlockRequest&& from) noexcept
+      : CopyBlockRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kSourceDatanodeIpFieldNumber = 3,
+    kBlockIdFieldNumber = 1,
+    kFileIdFieldNumber = 2,
+    kSourceOffsetFieldNumber = 5,
+    kSourceSizeFieldNumber = 6,
+    kSourceDatanodePortFieldNumber = 4,
+  };
+  // string source_datanode_ip = 3;
+  void clear_source_datanode_ip() ;
+  const ::std::string& source_datanode_ip() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_source_datanode_ip(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_source_datanode_ip();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_source_datanode_ip();
+  void set_allocated_source_datanode_ip(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_source_datanode_ip() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_source_datanode_ip(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_source_datanode_ip();
+
+  public:
+  // uint64 block_id = 1;
+  void clear_block_id() ;
+  ::uint64_t block_id() const;
+  void set_block_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_block_id() const;
+  void _internal_set_block_id(::uint64_t value);
+
+  public:
+  // uint64 file_id = 2;
+  void clear_file_id() ;
+  ::uint64_t file_id() const;
+  void set_file_id(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_file_id() const;
+  void _internal_set_file_id(::uint64_t value);
+
+  public:
+  // int64 source_offset = 5;
+  void clear_source_offset() ;
+  ::int64_t source_offset() const;
+  void set_source_offset(::int64_t value);
+
+  private:
+  ::int64_t _internal_source_offset() const;
+  void _internal_set_source_offset(::int64_t value);
+
+  public:
+  // int64 source_size = 6;
+  void clear_source_size() ;
+  ::int64_t source_size() const;
+  void set_source_size(::int64_t value);
+
+  private:
+  ::int64_t _internal_source_size() const;
+  void _internal_set_source_size(::int64_t value);
+
+  public:
+  // int32 source_datanode_port = 4;
+  void clear_source_datanode_port() ;
+  ::int32_t source_datanode_port() const;
+  void set_source_datanode_port(::int32_t value);
+
+  private:
+  ::int32_t _internal_source_datanode_port() const;
+  void _internal_set_source_datanode_port(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:minitfs.CopyBlockRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<3, 6,
+                                   0, 51,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CopyBlockRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr source_datanode_ip_;
+    ::uint64_t block_id_;
+    ::uint64_t file_id_;
+    ::int64_t source_offset_;
+    ::int64_t source_size_;
+    ::int32_t source_datanode_port_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_datanode_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull CopyBlockRequest_class_data_;
 
 // ===================================================================
 
@@ -2183,6 +2691,360 @@ inline void DeleteBlockResponse::set_allocated_message(::std::string* PROTOBUF_N
     _impl_.message_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:minitfs.DeleteBlockResponse.message)
+}
+
+// -------------------------------------------------------------------
+
+// CopyBlockRequest
+
+// uint64 block_id = 1;
+inline void CopyBlockRequest::clear_block_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.block_id_ = ::uint64_t{0u};
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::uint64_t CopyBlockRequest::block_id() const {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockRequest.block_id)
+  return _internal_block_id();
+}
+inline void CopyBlockRequest::set_block_id(::uint64_t value) {
+  _internal_set_block_id(value);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockRequest.block_id)
+}
+inline ::uint64_t CopyBlockRequest::_internal_block_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.block_id_;
+}
+inline void CopyBlockRequest::_internal_set_block_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.block_id_ = value;
+}
+
+// uint64 file_id = 2;
+inline void CopyBlockRequest::clear_file_id() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = ::uint64_t{0u};
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline ::uint64_t CopyBlockRequest::file_id() const {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockRequest.file_id)
+  return _internal_file_id();
+}
+inline void CopyBlockRequest::set_file_id(::uint64_t value) {
+  _internal_set_file_id(value);
+  _impl_._has_bits_[0] |= 0x00000004u;
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockRequest.file_id)
+}
+inline ::uint64_t CopyBlockRequest::_internal_file_id() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.file_id_;
+}
+inline void CopyBlockRequest::_internal_set_file_id(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.file_id_ = value;
+}
+
+// string source_datanode_ip = 3;
+inline void CopyBlockRequest::clear_source_datanode_ip() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_datanode_ip_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::std::string& CopyBlockRequest::source_datanode_ip() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockRequest.source_datanode_ip)
+  return _internal_source_datanode_ip();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CopyBlockRequest::set_source_datanode_ip(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.source_datanode_ip_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockRequest.source_datanode_ip)
+}
+inline ::std::string* PROTOBUF_NONNULL CopyBlockRequest::mutable_source_datanode_ip()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_source_datanode_ip();
+  // @@protoc_insertion_point(field_mutable:minitfs.CopyBlockRequest.source_datanode_ip)
+  return _s;
+}
+inline const ::std::string& CopyBlockRequest::_internal_source_datanode_ip() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_datanode_ip_.Get();
+}
+inline void CopyBlockRequest::_internal_set_source_datanode_ip(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.source_datanode_ip_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CopyBlockRequest::_internal_mutable_source_datanode_ip() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.source_datanode_ip_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CopyBlockRequest::release_source_datanode_ip() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:minitfs.CopyBlockRequest.source_datanode_ip)
+  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* released = _impl_.source_datanode_ip_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.source_datanode_ip_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CopyBlockRequest::set_allocated_source_datanode_ip(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.source_datanode_ip_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.source_datanode_ip_.IsDefault()) {
+    _impl_.source_datanode_ip_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:minitfs.CopyBlockRequest.source_datanode_ip)
+}
+
+// int32 source_datanode_port = 4;
+inline void CopyBlockRequest::clear_source_datanode_port() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_datanode_port_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000020u;
+}
+inline ::int32_t CopyBlockRequest::source_datanode_port() const {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockRequest.source_datanode_port)
+  return _internal_source_datanode_port();
+}
+inline void CopyBlockRequest::set_source_datanode_port(::int32_t value) {
+  _internal_set_source_datanode_port(value);
+  _impl_._has_bits_[0] |= 0x00000020u;
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockRequest.source_datanode_port)
+}
+inline ::int32_t CopyBlockRequest::_internal_source_datanode_port() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_datanode_port_;
+}
+inline void CopyBlockRequest::_internal_set_source_datanode_port(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_datanode_port_ = value;
+}
+
+// int64 source_offset = 5;
+inline void CopyBlockRequest::clear_source_offset() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_offset_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline ::int64_t CopyBlockRequest::source_offset() const {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockRequest.source_offset)
+  return _internal_source_offset();
+}
+inline void CopyBlockRequest::set_source_offset(::int64_t value) {
+  _internal_set_source_offset(value);
+  _impl_._has_bits_[0] |= 0x00000008u;
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockRequest.source_offset)
+}
+inline ::int64_t CopyBlockRequest::_internal_source_offset() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_offset_;
+}
+inline void CopyBlockRequest::_internal_set_source_offset(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_offset_ = value;
+}
+
+// int64 source_size = 6;
+inline void CopyBlockRequest::clear_source_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_size_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000010u;
+}
+inline ::int64_t CopyBlockRequest::source_size() const {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockRequest.source_size)
+  return _internal_source_size();
+}
+inline void CopyBlockRequest::set_source_size(::int64_t value) {
+  _internal_set_source_size(value);
+  _impl_._has_bits_[0] |= 0x00000010u;
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockRequest.source_size)
+}
+inline ::int64_t CopyBlockRequest::_internal_source_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.source_size_;
+}
+inline void CopyBlockRequest::_internal_set_source_size(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.source_size_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// CopyBlockResponse
+
+// int32 status = 1;
+inline void CopyBlockResponse::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline ::int32_t CopyBlockResponse::status() const {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockResponse.status)
+  return _internal_status();
+}
+inline void CopyBlockResponse::set_status(::int32_t value) {
+  _internal_set_status(value);
+  _impl_._has_bits_[0] |= 0x00000004u;
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockResponse.status)
+}
+inline ::int32_t CopyBlockResponse::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.status_;
+}
+inline void CopyBlockResponse::_internal_set_status(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = value;
+}
+
+// string message = 2;
+inline void CopyBlockResponse::clear_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::std::string& CopyBlockResponse::message() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockResponse.message)
+  return _internal_message();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CopyBlockResponse::set_message(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.message_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockResponse.message)
+}
+inline ::std::string* PROTOBUF_NONNULL CopyBlockResponse::mutable_message()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_message();
+  // @@protoc_insertion_point(field_mutable:minitfs.CopyBlockResponse.message)
+  return _s;
+}
+inline const ::std::string& CopyBlockResponse::_internal_message() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.message_.Get();
+}
+inline void CopyBlockResponse::_internal_set_message(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.message_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CopyBlockResponse::_internal_mutable_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.message_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CopyBlockResponse::release_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:minitfs.CopyBlockResponse.message)
+  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* released = _impl_.message_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.message_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CopyBlockResponse::set_allocated_message(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.message_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.message_.IsDefault()) {
+    _impl_.message_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:minitfs.CopyBlockResponse.message)
+}
+
+// int64 offset = 3;
+inline void CopyBlockResponse::clear_offset() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.offset_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::int64_t CopyBlockResponse::offset() const {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockResponse.offset)
+  return _internal_offset();
+}
+inline void CopyBlockResponse::set_offset(::int64_t value) {
+  _internal_set_offset(value);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockResponse.offset)
+}
+inline ::int64_t CopyBlockResponse::_internal_offset() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.offset_;
+}
+inline void CopyBlockResponse::_internal_set_offset(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.offset_ = value;
+}
+
+// int64 size = 4;
+inline void CopyBlockResponse::clear_size() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.size_ = ::int64_t{0};
+  _impl_._has_bits_[0] &= ~0x00000010u;
+}
+inline ::int64_t CopyBlockResponse::size() const {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockResponse.size)
+  return _internal_size();
+}
+inline void CopyBlockResponse::set_size(::int64_t value) {
+  _internal_set_size(value);
+  _impl_._has_bits_[0] |= 0x00000010u;
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockResponse.size)
+}
+inline ::int64_t CopyBlockResponse::_internal_size() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.size_;
+}
+inline void CopyBlockResponse::_internal_set_size(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.size_ = value;
+}
+
+// uint32 crc32 = 5;
+inline void CopyBlockResponse::clear_crc32() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.crc32_ = 0u;
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline ::uint32_t CopyBlockResponse::crc32() const {
+  // @@protoc_insertion_point(field_get:minitfs.CopyBlockResponse.crc32)
+  return _internal_crc32();
+}
+inline void CopyBlockResponse::set_crc32(::uint32_t value) {
+  _internal_set_crc32(value);
+  _impl_._has_bits_[0] |= 0x00000008u;
+  // @@protoc_insertion_point(field_set:minitfs.CopyBlockResponse.crc32)
+}
+inline ::uint32_t CopyBlockResponse::_internal_crc32() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.crc32_;
+}
+inline void CopyBlockResponse::_internal_set_crc32(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.crc32_ = value;
 }
 
 #ifdef __GNUC__

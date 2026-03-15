@@ -61,6 +61,13 @@ class DataNodeService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::DeleteBlockResponse>> PrepareAsyncDeleteBlock(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::DeleteBlockResponse>>(PrepareAsyncDeleteBlockRaw(context, request, cq));
     }
+    virtual ::grpc::Status CopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::minitfs::CopyBlockResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::CopyBlockResponse>> AsyncCopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::CopyBlockResponse>>(AsyncCopyBlockRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::CopyBlockResponse>> PrepareAsyncCopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::CopyBlockResponse>>(PrepareAsyncCopyBlockRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -68,6 +75,8 @@ class DataNodeService final {
       virtual void ReadBlock(::grpc::ClientContext* context, const ::minitfs::ReadBlockRequest* request, ::grpc::ClientReadReactor< ::minitfs::ReadBlockResponse>* reactor) = 0;
       virtual void DeleteBlock(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest* request, ::minitfs::DeleteBlockResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void DeleteBlock(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest* request, ::minitfs::DeleteBlockResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void CopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest* request, ::minitfs::CopyBlockResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void CopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest* request, ::minitfs::CopyBlockResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -81,6 +90,8 @@ class DataNodeService final {
     virtual ::grpc::ClientAsyncReaderInterface< ::minitfs::ReadBlockResponse>* PrepareAsyncReadBlockRaw(::grpc::ClientContext* context, const ::minitfs::ReadBlockRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::DeleteBlockResponse>* AsyncDeleteBlockRaw(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::DeleteBlockResponse>* PrepareAsyncDeleteBlockRaw(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::CopyBlockResponse>* AsyncCopyBlockRaw(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::minitfs::CopyBlockResponse>* PrepareAsyncCopyBlockRaw(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -110,6 +121,13 @@ class DataNodeService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::minitfs::DeleteBlockResponse>> PrepareAsyncDeleteBlock(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::minitfs::DeleteBlockResponse>>(PrepareAsyncDeleteBlockRaw(context, request, cq));
     }
+    ::grpc::Status CopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::minitfs::CopyBlockResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::minitfs::CopyBlockResponse>> AsyncCopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::minitfs::CopyBlockResponse>>(AsyncCopyBlockRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::minitfs::CopyBlockResponse>> PrepareAsyncCopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::minitfs::CopyBlockResponse>>(PrepareAsyncCopyBlockRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -117,6 +135,8 @@ class DataNodeService final {
       void ReadBlock(::grpc::ClientContext* context, const ::minitfs::ReadBlockRequest* request, ::grpc::ClientReadReactor< ::minitfs::ReadBlockResponse>* reactor) override;
       void DeleteBlock(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest* request, ::minitfs::DeleteBlockResponse* response, std::function<void(::grpc::Status)>) override;
       void DeleteBlock(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest* request, ::minitfs::DeleteBlockResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void CopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest* request, ::minitfs::CopyBlockResponse* response, std::function<void(::grpc::Status)>) override;
+      void CopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest* request, ::minitfs::CopyBlockResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -136,9 +156,12 @@ class DataNodeService final {
     ::grpc::ClientAsyncReader< ::minitfs::ReadBlockResponse>* PrepareAsyncReadBlockRaw(::grpc::ClientContext* context, const ::minitfs::ReadBlockRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::minitfs::DeleteBlockResponse>* AsyncDeleteBlockRaw(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::minitfs::DeleteBlockResponse>* PrepareAsyncDeleteBlockRaw(::grpc::ClientContext* context, const ::minitfs::DeleteBlockRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::minitfs::CopyBlockResponse>* AsyncCopyBlockRaw(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::minitfs::CopyBlockResponse>* PrepareAsyncCopyBlockRaw(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_WriteBlock_;
     const ::grpc::internal::RpcMethod rpcmethod_ReadBlock_;
     const ::grpc::internal::RpcMethod rpcmethod_DeleteBlock_;
+    const ::grpc::internal::RpcMethod rpcmethod_CopyBlock_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -149,6 +172,7 @@ class DataNodeService final {
     virtual ::grpc::Status WriteBlock(::grpc::ServerContext* context, ::grpc::ServerReader< ::minitfs::WriteBlockRequest>* reader, ::minitfs::WriteBlockResponse* response);
     virtual ::grpc::Status ReadBlock(::grpc::ServerContext* context, const ::minitfs::ReadBlockRequest* request, ::grpc::ServerWriter< ::minitfs::ReadBlockResponse>* writer);
     virtual ::grpc::Status DeleteBlock(::grpc::ServerContext* context, const ::minitfs::DeleteBlockRequest* request, ::minitfs::DeleteBlockResponse* response);
+    virtual ::grpc::Status CopyBlock(::grpc::ServerContext* context, const ::minitfs::CopyBlockRequest* request, ::minitfs::CopyBlockResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_WriteBlock : public BaseClass {
@@ -210,7 +234,27 @@ class DataNodeService final {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_WriteBlock<WithAsyncMethod_ReadBlock<WithAsyncMethod_DeleteBlock<Service > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_CopyBlock : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_CopyBlock() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_CopyBlock() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CopyBlock(::grpc::ServerContext* /*context*/, const ::minitfs::CopyBlockRequest* /*request*/, ::minitfs::CopyBlockResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestCopyBlock(::grpc::ServerContext* context, ::minitfs::CopyBlockRequest* request, ::grpc::ServerAsyncResponseWriter< ::minitfs::CopyBlockResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_WriteBlock<WithAsyncMethod_ReadBlock<WithAsyncMethod_DeleteBlock<WithAsyncMethod_CopyBlock<Service > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_WriteBlock : public BaseClass {
    private:
@@ -282,7 +326,34 @@ class DataNodeService final {
     virtual ::grpc::ServerUnaryReactor* DeleteBlock(
       ::grpc::CallbackServerContext* /*context*/, const ::minitfs::DeleteBlockRequest* /*request*/, ::minitfs::DeleteBlockResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_WriteBlock<WithCallbackMethod_ReadBlock<WithCallbackMethod_DeleteBlock<Service > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_CopyBlock : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_CopyBlock() {
+      ::grpc::Service::MarkMethodCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::minitfs::CopyBlockRequest, ::minitfs::CopyBlockResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::minitfs::CopyBlockRequest* request, ::minitfs::CopyBlockResponse* response) { return this->CopyBlock(context, request, response); }));}
+    void SetMessageAllocatorFor_CopyBlock(
+        ::grpc::MessageAllocator< ::minitfs::CopyBlockRequest, ::minitfs::CopyBlockResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::minitfs::CopyBlockRequest, ::minitfs::CopyBlockResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_CopyBlock() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CopyBlock(::grpc::ServerContext* /*context*/, const ::minitfs::CopyBlockRequest* /*request*/, ::minitfs::CopyBlockResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* CopyBlock(
+      ::grpc::CallbackServerContext* /*context*/, const ::minitfs::CopyBlockRequest* /*request*/, ::minitfs::CopyBlockResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_WriteBlock<WithCallbackMethod_ReadBlock<WithCallbackMethod_DeleteBlock<WithCallbackMethod_CopyBlock<Service > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_WriteBlock : public BaseClass {
@@ -331,6 +402,23 @@ class DataNodeService final {
     }
     // disable synchronous version of this method
     ::grpc::Status DeleteBlock(::grpc::ServerContext* /*context*/, const ::minitfs::DeleteBlockRequest* /*request*/, ::minitfs::DeleteBlockResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_CopyBlock : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_CopyBlock() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_CopyBlock() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CopyBlock(::grpc::ServerContext* /*context*/, const ::minitfs::CopyBlockRequest* /*request*/, ::minitfs::CopyBlockResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -393,6 +481,26 @@ class DataNodeService final {
     }
     void RequestDeleteBlock(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_CopyBlock : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_CopyBlock() {
+      ::grpc::Service::MarkMethodRaw(3);
+    }
+    ~WithRawMethod_CopyBlock() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CopyBlock(::grpc::ServerContext* /*context*/, const ::minitfs::CopyBlockRequest* /*request*/, ::minitfs::CopyBlockResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestCopyBlock(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -462,6 +570,28 @@ class DataNodeService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_CopyBlock : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_CopyBlock() {
+      ::grpc::Service::MarkMethodRawCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->CopyBlock(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_CopyBlock() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CopyBlock(::grpc::ServerContext* /*context*/, const ::minitfs::CopyBlockRequest* /*request*/, ::minitfs::CopyBlockResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* CopyBlock(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_DeleteBlock : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -488,7 +618,34 @@ class DataNodeService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedDeleteBlock(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::minitfs::DeleteBlockRequest,::minitfs::DeleteBlockResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_DeleteBlock<Service > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_CopyBlock : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_CopyBlock() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::minitfs::CopyBlockRequest, ::minitfs::CopyBlockResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::minitfs::CopyBlockRequest, ::minitfs::CopyBlockResponse>* streamer) {
+                       return this->StreamedCopyBlock(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_CopyBlock() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status CopyBlock(::grpc::ServerContext* /*context*/, const ::minitfs::CopyBlockRequest* /*request*/, ::minitfs::CopyBlockResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedCopyBlock(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::minitfs::CopyBlockRequest,::minitfs::CopyBlockResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_DeleteBlock<WithStreamedUnaryMethod_CopyBlock<Service > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_ReadBlock : public BaseClass {
    private:
@@ -517,7 +674,7 @@ class DataNodeService final {
     virtual ::grpc::Status StreamedReadBlock(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::minitfs::ReadBlockRequest,::minitfs::ReadBlockResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_ReadBlock<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_ReadBlock<WithStreamedUnaryMethod_DeleteBlock<Service > > StreamedService;
+  typedef WithSplitStreamingMethod_ReadBlock<WithStreamedUnaryMethod_DeleteBlock<WithStreamedUnaryMethod_CopyBlock<Service > > > StreamedService;
 };
 
 }  // namespace minitfs

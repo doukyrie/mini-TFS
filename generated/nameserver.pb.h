@@ -20,6 +20,7 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/arena.h"
 #include "google/protobuf/arenastring.h"
+#include "google/protobuf/generated_message_bases.h"
 #include "google/protobuf/generated_message_tctable_decl.h"
 #include "google/protobuf/generated_message_util.h"
 #include "google/protobuf/metadata_lite.h"
@@ -105,6 +106,14 @@ class HeartbeatResponse;
 struct HeartbeatResponseDefaultTypeInternal;
 extern HeartbeatResponseDefaultTypeInternal _HeartbeatResponse_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull HeartbeatResponse_class_data_;
+class TriggerRebalanceRequest;
+struct TriggerRebalanceRequestDefaultTypeInternal;
+extern TriggerRebalanceRequestDefaultTypeInternal _TriggerRebalanceRequest_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TriggerRebalanceRequest_class_data_;
+class TriggerRebalanceResponse;
+struct TriggerRebalanceResponseDefaultTypeInternal;
+extern TriggerRebalanceResponseDefaultTypeInternal _TriggerRebalanceResponse_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull TriggerRebalanceResponse_class_data_;
 }  // namespace minitfs
 namespace google {
 namespace protobuf {
@@ -116,6 +125,372 @@ namespace minitfs {
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class TriggerRebalanceResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:minitfs.TriggerRebalanceResponse) */ {
+ public:
+  inline TriggerRebalanceResponse() : TriggerRebalanceResponse(nullptr) {}
+  ~TriggerRebalanceResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TriggerRebalanceResponse* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TriggerRebalanceResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TriggerRebalanceResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline TriggerRebalanceResponse(const TriggerRebalanceResponse& from) : TriggerRebalanceResponse(nullptr, from) {}
+  inline TriggerRebalanceResponse(TriggerRebalanceResponse&& from) noexcept
+      : TriggerRebalanceResponse(nullptr, ::std::move(from)) {}
+  inline TriggerRebalanceResponse& operator=(const TriggerRebalanceResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TriggerRebalanceResponse& operator=(TriggerRebalanceResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TriggerRebalanceResponse& default_instance() {
+    return *reinterpret_cast<const TriggerRebalanceResponse*>(
+        &_TriggerRebalanceResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 14;
+  friend void swap(TriggerRebalanceResponse& a, TriggerRebalanceResponse& b) { a.Swap(&b); }
+  inline void Swap(TriggerRebalanceResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TriggerRebalanceResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TriggerRebalanceResponse* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TriggerRebalanceResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TriggerRebalanceResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TriggerRebalanceResponse& from) { TriggerRebalanceResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TriggerRebalanceResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "minitfs.TriggerRebalanceResponse"; }
+
+ protected:
+  explicit TriggerRebalanceResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TriggerRebalanceResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TriggerRebalanceResponse& from);
+  TriggerRebalanceResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TriggerRebalanceResponse&& from) noexcept
+      : TriggerRebalanceResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMessageFieldNumber = 2,
+    kStatusFieldNumber = 1,
+    kTaskCountFieldNumber = 3,
+  };
+  // string message = 2;
+  void clear_message() ;
+  const ::std::string& message() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_message(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_message();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_message();
+  void set_allocated_message(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_message() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_message(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_message();
+
+  public:
+  // int32 status = 1;
+  void clear_status() ;
+  ::int32_t status() const;
+  void set_status(::int32_t value);
+
+  private:
+  ::int32_t _internal_status() const;
+  void _internal_set_status(::int32_t value);
+
+  public:
+  // int32 task_count = 3;
+  void clear_task_count() ;
+  ::int32_t task_count() const;
+  void set_task_count(::int32_t value);
+
+  private:
+  ::int32_t _internal_task_count() const;
+  void _internal_set_task_count(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:minitfs.TriggerRebalanceResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   0, 48,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TriggerRebalanceResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::internal::ArenaStringPtr message_;
+    ::int32_t status_;
+    ::int32_t task_count_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_nameserver_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TriggerRebalanceResponse_class_data_;
+// -------------------------------------------------------------------
+
+class TriggerRebalanceRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:minitfs.TriggerRebalanceRequest) */ {
+ public:
+  inline TriggerRebalanceRequest() : TriggerRebalanceRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(TriggerRebalanceRequest* PROTOBUF_NONNULL msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TriggerRebalanceRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TriggerRebalanceRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline TriggerRebalanceRequest(const TriggerRebalanceRequest& from) : TriggerRebalanceRequest(nullptr, from) {}
+  inline TriggerRebalanceRequest(TriggerRebalanceRequest&& from) noexcept
+      : TriggerRebalanceRequest(nullptr, ::std::move(from)) {}
+  inline TriggerRebalanceRequest& operator=(const TriggerRebalanceRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TriggerRebalanceRequest& operator=(TriggerRebalanceRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TriggerRebalanceRequest& default_instance() {
+    return *reinterpret_cast<const TriggerRebalanceRequest*>(
+        &_TriggerRebalanceRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 13;
+  friend void swap(TriggerRebalanceRequest& a, TriggerRebalanceRequest& b) { a.Swap(&b); }
+  inline void Swap(TriggerRebalanceRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(TriggerRebalanceRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  TriggerRebalanceRequest* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<TriggerRebalanceRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const TriggerRebalanceRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const TriggerRebalanceRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "minitfs.TriggerRebalanceRequest"; }
+
+ protected:
+  explicit TriggerRebalanceRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  TriggerRebalanceRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const TriggerRebalanceRequest& from);
+  TriggerRebalanceRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, TriggerRebalanceRequest&& from) noexcept
+      : TriggerRebalanceRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:minitfs.TriggerRebalanceRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 0,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const TriggerRebalanceRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_nameserver_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull TriggerRebalanceRequest_class_data_;
 // -------------------------------------------------------------------
 
 class HeartbeatResponse final : public ::google::protobuf::Message
@@ -4474,6 +4849,127 @@ inline void BlockReportResponse::set_allocated_message(::std::string* PROTOBUF_N
     _impl_.message_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:minitfs.BlockReportResponse.message)
+}
+
+// -------------------------------------------------------------------
+
+// TriggerRebalanceRequest
+
+// -------------------------------------------------------------------
+
+// TriggerRebalanceResponse
+
+// int32 status = 1;
+inline void TriggerRebalanceResponse::clear_status() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline ::int32_t TriggerRebalanceResponse::status() const {
+  // @@protoc_insertion_point(field_get:minitfs.TriggerRebalanceResponse.status)
+  return _internal_status();
+}
+inline void TriggerRebalanceResponse::set_status(::int32_t value) {
+  _internal_set_status(value);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_set:minitfs.TriggerRebalanceResponse.status)
+}
+inline ::int32_t TriggerRebalanceResponse::_internal_status() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.status_;
+}
+inline void TriggerRebalanceResponse::_internal_set_status(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.status_ = value;
+}
+
+// string message = 2;
+inline void TriggerRebalanceResponse::clear_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_.ClearToEmpty();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::std::string& TriggerRebalanceResponse::message() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:minitfs.TriggerRebalanceResponse.message)
+  return _internal_message();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void TriggerRebalanceResponse::set_message(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.message_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:minitfs.TriggerRebalanceResponse.message)
+}
+inline ::std::string* PROTOBUF_NONNULL TriggerRebalanceResponse::mutable_message()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::std::string* _s = _internal_mutable_message();
+  // @@protoc_insertion_point(field_mutable:minitfs.TriggerRebalanceResponse.message)
+  return _s;
+}
+inline const ::std::string& TriggerRebalanceResponse::_internal_message() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.message_.Get();
+}
+inline void TriggerRebalanceResponse::_internal_set_message(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.message_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL TriggerRebalanceResponse::_internal_mutable_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.message_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE TriggerRebalanceResponse::release_message() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:minitfs.TriggerRebalanceResponse.message)
+  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* released = _impl_.message_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.message_.Set("", GetArena());
+  }
+  return released;
+}
+inline void TriggerRebalanceResponse::set_allocated_message(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.message_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.message_.IsDefault()) {
+    _impl_.message_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:minitfs.TriggerRebalanceResponse.message)
+}
+
+// int32 task_count = 3;
+inline void TriggerRebalanceResponse::clear_task_count() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.task_count_ = 0;
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline ::int32_t TriggerRebalanceResponse::task_count() const {
+  // @@protoc_insertion_point(field_get:minitfs.TriggerRebalanceResponse.task_count)
+  return _internal_task_count();
+}
+inline void TriggerRebalanceResponse::set_task_count(::int32_t value) {
+  _internal_set_task_count(value);
+  _impl_._has_bits_[0] |= 0x00000004u;
+  // @@protoc_insertion_point(field_set:minitfs.TriggerRebalanceResponse.task_count)
+}
+inline ::int32_t TriggerRebalanceResponse::_internal_task_count() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.task_count_;
+}
+inline void TriggerRebalanceResponse::_internal_set_task_count(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.task_count_ = value;
 }
 
 #ifdef __GNUC__

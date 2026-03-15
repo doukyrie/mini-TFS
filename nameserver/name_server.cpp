@@ -116,6 +116,8 @@ grpc::Status NameServerServiceImpl::Heartbeat(
         grpc::ServerContext*, const HeartbeatRequest* req,
         HeartbeatResponse* resp) {
 
+    bool is_new = (mgr_.get_datanode(req->datanode_id()) == nullptr);
+
     DataNodeInfo info;
     info.id                 = req->datanode_id();
     info.ip                 = req->ip();
@@ -125,8 +127,24 @@ grpc::Status NameServerServiceImpl::Heartbeat(
     info.active_connections = req->active_connections();
     mgr_.register_datanode(info);
 
+    if (is_new) {
+        rebalance_mgr_.notify_new_node(req->datanode_id());
+    }
+
     resp->set_status(0);
     resp->set_message("ok");
+    return grpc::Status::OK;
+}
+
+grpc::Status NameServerServiceImpl::TriggerRebalance(
+        grpc::ServerContext*, const TriggerRebalanceRequest*,
+        TriggerRebalanceResponse* resp) {
+
+    int count = rebalance_mgr_.trigger();
+    resp->set_status(0);
+    resp->set_message("ok");
+    resp->set_task_count(count);
+    std::cout << "[NameServer] TriggerRebalance: " << count << " tasks\n";
     return grpc::Status::OK;
 }
 

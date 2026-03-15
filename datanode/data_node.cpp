@@ -361,4 +361,114 @@ grpc::Status DataNodeServiceImpl::DeleteBlock(
     return grpc::Status::OK;
 }
 
+grpc::Status DataNodeServiceImpl::CopyBlock(
+        grpc::ServerContext*,
+        const CopyBlockRequest* req,
+        CopyBlockResponse* resp) {
+
+    // 1. 建立到源 DataNode 的连接
+    std::string src_addr = req->source_datanode_ip() + ":" + std::to_string(req->source_datanode_port());
+    auto src_channel = grpc::CreateChannel(src_addr, grpc::InsecureChannelCredentials());
+    auto src_stub = DataNodeService::NewStub(src_channel);
+
+    // 2. 调用源节点的 ReadBlock 流式读取
+    ReadBlockRequest read_req;
+    read_req.set_block_id(req->block_id());
+    read_req.set_file_id(req->file_id());
+    read_req.set_offset(req->source_offset());
+    read_req.set_size(req->source_size());
+
+    grpc::ClientContext read_ctx;
+    auto reader = src_stub->ReadBlock(&read_ctx, read_req);
+
+    // 3. 边收边写到本地（复用 WriteBlock 逻辑）
+    std::shared_ptr<BlockContext> bctx;
+    {
+        std::lock_guard<std::mutex> lk(mu_);
+        bctx = get_or_create_block(req->block_id());
+    }
+    if (!bctx) {
+        resp->set_status(-1);
+        resp->set_message("failed to create block context");
+        return grpc::Status::OK;
+    }
+
+    std::lock_guard<std::mutex> blk_lk(bctx->mu);
+
+    // 读取 start_offset（与 WriteBlock 完全一致）
+    int32_t start_offset  = bctx->index->get_index_header()->data_file_offset;
+    int32_t total_written = 0;
+    uLong   running_crc   = crc32(0L, Z_NULL, 0);
+    uint32_t final_crc    = 0;
+    ReadBlockResponse chunk;
+
+    while (reader->Read(&chunk)) {
+        if (chunk.status() != 0) {
+            resp->set_status(-1);
+            resp->set_message("source read failed: " + chunk.message());
+            return grpc::Status::OK;
+        }
+
+        const auto& d = chunk.data();
+        if (d.empty()) continue;
+
+        int ret = bctx->main_block->pwrite_file(
+            d.data(), static_cast<int32_t>(d.size()),
+            start_offset + total_written);
+        if (ret < 0) {
+            resp->set_status(-1);
+            resp->set_message("pwrite_file failed");
+            return grpc::Status::OK;
+        }
+        running_crc = crc32(running_crc,
+            reinterpret_cast<const Bytef*>(d.data()), d.size());
+        total_written += static_cast<int32_t>(d.size());
+        if (chunk.crc32() != 0) final_crc = chunk.crc32();
+    }
+
+    auto st = reader->Finish();
+    if (!st.ok()) {
+        resp->set_status(-1);
+        resp->set_message("source stream error: " + st.error_message());
+        return grpc::Status::OK;
+    }
+
+    if (total_written == 0) {
+        resp->set_status(-1);
+        resp->set_message("no data received from source");
+        return grpc::Status::OK;
+    }
+
+    // 6. 写索引 MetaInfo
+    qiniu::largefile::MetaInfo meta;
+    meta.set_file_id(req->file_id());
+    meta.set_offset(start_offset);
+    meta.set_size(total_written);
+    meta.set_crc32(final_crc);
+
+    int ret = bctx->index->write_segment_meta(meta.get_key(), meta);
+    if (ret < 0) {
+        resp->set_status(-1);
+        resp->set_message("write_segment_meta failed");
+        return grpc::Status::OK;
+    }
+
+    // 7. 更新索引头，刷盘
+    bctx->index->set_index_header_offset(total_written);
+    bctx->index->update_block_info(qiniu::largefile::C_OPER_INSERT, total_written);
+    bctx->index->flush();
+
+    resp->set_status(0);
+    resp->set_message("ok");
+    resp->set_offset(start_offset);
+    resp->set_size(total_written);
+    resp->set_crc32(final_crc);
+
+    std::cout << "[DataNode] CopyBlock: block=" << req->block_id()
+              << " file=" << req->file_id()
+              << " from=" << src_addr
+              << " size=" << total_written << "\n";
+    return grpc::Status::OK;
+}
+
 } // namespace minitfs

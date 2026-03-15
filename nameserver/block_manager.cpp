@@ -163,6 +163,56 @@ void BlockManager::stop_dead_detector() {
     if (detector_thread_.joinable()) detector_thread_.join();
 }
 
+void BlockManager::add_replica(uint64_t file_id, const ReplicaLocation& replica) {
+    std::lock_guard<std::mutex> lock(mu_);
+    auto it = file_map_.find(file_id);
+    if (it == file_map_.end()) {
+        std::cerr << "[BlockManager] add_replica: file_id " << file_id << " not found\n";
+        return;
+    }
+    it->second.replicas.push_back(replica);
+
+    // 追加 WAL
+    if (wal_file_.is_open()) {
+        wal_file_ << "ADD_REPLICA " << file_id << " " << replica.datanode_id
+                  << " " << replica.offset << " " << replica.size << "\n";
+        wal_file_.flush();
+    }
+}
+
+void BlockManager::remove_replica(uint64_t file_id, const std::string& datanode_id) {
+    std::lock_guard<std::mutex> lock(mu_);
+    auto it = file_map_.find(file_id);
+    if (it == file_map_.end()) return;
+
+    auto& replicas = it->second.replicas;
+    replicas.erase(
+        std::remove_if(replicas.begin(), replicas.end(),
+                       [&](const ReplicaLocation& r) { return r.datanode_id == datanode_id; }),
+        replicas.end()
+    );
+
+    // 追加 WAL
+    if (wal_file_.is_open()) {
+        wal_file_ << "DEL_REPLICA " << file_id << " " << datanode_id << "\n";
+        wal_file_.flush();
+    }
+}
+
+std::unordered_map<uint64_t, FileLocation> BlockManager::get_all_files() {
+    std::lock_guard<std::mutex> lock(mu_);
+    return file_map_;
+}
+
+std::vector<DataNodeInfo> BlockManager::get_alive_datanodes() {
+    std::lock_guard<std::mutex> lock(mu_);
+    std::vector<DataNodeInfo> result;
+    for (const auto& [id, node] : datanodes_) {
+        if (node.is_alive()) result.push_back(node);
+    }
+    return result;
+}
+
 void BlockManager::wal_append_commit(uint64_t file_id, const FileLocation& loc) {
     if (!wal_file_.is_open()) return;
     wal_file_ << "COMMIT " << file_id << " " << loc.block_id
@@ -209,6 +259,27 @@ void BlockManager::replay_wal() {
             uint64_t file_id;
             ss >> file_id;
             file_map_.erase(file_id);
+        } else if (op == "ADD_REPLICA") {
+            uint64_t file_id;
+            ReplicaLocation r;
+            ss >> file_id >> r.datanode_id >> r.offset >> r.size;
+            auto it = file_map_.find(file_id);
+            if (it != file_map_.end()) {
+                it->second.replicas.push_back(r);
+            }
+        } else if (op == "DEL_REPLICA") {
+            uint64_t file_id;
+            std::string datanode_id;
+            ss >> file_id >> datanode_id;
+            auto it = file_map_.find(file_id);
+            if (it != file_map_.end()) {
+                auto& replicas = it->second.replicas;
+                replicas.erase(
+                    std::remove_if(replicas.begin(), replicas.end(),
+                                   [&](const ReplicaLocation& r) { return r.datanode_id == datanode_id; }),
+                    replicas.end()
+                );
+            }
         }
     }
     if (max_file_id > next_file_id_.load())   next_file_id_.store(max_file_id);

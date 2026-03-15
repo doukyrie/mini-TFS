@@ -37,8 +37,25 @@ message DeleteBlockResponse {
     string message = 2;
 }
 
+message CopyBlockRequest {
+    uint64 block_id            = 1;
+    uint64 file_id             = 2;
+    string source_datanode_ip  = 3;
+    int32  source_datanode_port = 4;
+    int64  source_offset       = 5;
+    int64  source_size         = 6;
+}
+message CopyBlockResponse {
+    int32  status  = 1;
+    string message = 2;
+    int64  offset  = 3;
+    int64  size    = 4;
+    uint32 crc32   = 5;
+}
+
 service DataNodeService {
     rpc WriteBlock  (stream WriteBlockRequest) returns (WriteBlockResponse);
     rpc ReadBlock   (ReadBlockRequest)         returns (stream ReadBlockResponse);
     rpc DeleteBlock (DeleteBlockRequest)       returns (DeleteBlockResponse);
+    rpc CopyBlock   (CopyBlockRequest)         returns (CopyBlockResponse);
 }

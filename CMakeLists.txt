@@ -41,6 +41,7 @@ add_executable(nameserver
     nameserver/main.cpp
     nameserver/name_server.cpp
     nameserver/block_manager.cpp
+    nameserver/rebalance_manager.cpp
 )
 target_include_directories(nameserver PRIVATE nameserver)
 target_link_libraries(nameserver PRIVATE proto_gen)

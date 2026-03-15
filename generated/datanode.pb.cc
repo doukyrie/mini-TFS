@@ -200,6 +200,69 @@ struct DeleteBlockRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DeleteBlockRequestDefaultTypeInternal _DeleteBlockRequest_default_instance_;
+
+inline constexpr CopyBlockResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        message_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        offset_{::int64_t{0}},
+        status_{0},
+        crc32_{0u},
+        size_{::int64_t{0}} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CopyBlockResponse::CopyBlockResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(CopyBlockResponse_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct CopyBlockResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CopyBlockResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CopyBlockResponseDefaultTypeInternal() {}
+  union {
+    CopyBlockResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CopyBlockResponseDefaultTypeInternal _CopyBlockResponse_default_instance_;
+
+inline constexpr CopyBlockRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        source_datanode_ip_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        block_id_{::uint64_t{0u}},
+        file_id_{::uint64_t{0u}},
+        source_offset_{::int64_t{0}},
+        source_size_{::int64_t{0}},
+        source_datanode_port_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR CopyBlockRequest::CopyBlockRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(CopyBlockRequest_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct CopyBlockRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CopyBlockRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CopyBlockRequestDefaultTypeInternal() {}
+  union {
+    CopyBlockRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CopyBlockRequestDefaultTypeInternal _CopyBlockRequest_default_instance_;
 }  // namespace minitfs
 static constexpr const ::_pb::EnumDescriptor *PROTOBUF_NONNULL *PROTOBUF_NULLABLE
     file_level_enum_descriptors_datanode_2eproto = nullptr;
@@ -268,6 +331,34 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::minitfs::DeleteBlockResponse, _impl_.message_),
         1,
         0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockRequest, _impl_._has_bits_),
+        9, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockRequest, _impl_.block_id_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockRequest, _impl_.file_id_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockRequest, _impl_.source_datanode_ip_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockRequest, _impl_.source_datanode_port_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockRequest, _impl_.source_offset_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockRequest, _impl_.source_size_),
+        1,
+        2,
+        0,
+        5,
+        3,
+        4,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockResponse, _impl_._has_bits_),
+        8, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockResponse, _impl_.status_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockResponse, _impl_.message_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockResponse, _impl_.offset_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockResponse, _impl_.size_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::CopyBlockResponse, _impl_.crc32_),
+        2,
+        0,
+        1,
+        4,
+        3,
 };
 
 static const ::_pbi::MigrationSchema
@@ -278,6 +369,8 @@ static const ::_pbi::MigrationSchema
         {35, sizeof(::minitfs::ReadBlockResponse)},
         {46, sizeof(::minitfs::DeleteBlockRequest)},
         {53, sizeof(::minitfs::DeleteBlockResponse)},
+        {60, sizeof(::minitfs::CopyBlockRequest)},
+        {75, sizeof(::minitfs::CopyBlockResponse)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::minitfs::_WriteBlockRequest_default_instance_._instance,
@@ -286,6 +379,8 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::minitfs::_ReadBlockResponse_default_instance_._instance,
     &::minitfs::_DeleteBlockRequest_default_instance_._instance,
     &::minitfs::_DeleteBlockResponse_default_instance_._instance,
+    &::minitfs::_CopyBlockRequest_default_instance_._instance,
+    &::minitfs::_CopyBlockResponse_default_instance_._instance,
 };
 const char descriptor_table_protodef_datanode_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -301,25 +396,33 @@ const char descriptor_table_protodef_datanode_2eproto[] ABSL_ATTRIBUTE_SECTION_V
     "\003 \001(\014\022\r\n\005crc32\030\004 \001(\r\"7\n\022DeleteBlockReque"
     "st\022\020\n\010block_id\030\001 \001(\004\022\017\n\007file_id\030\002 \001(\004\"6\n"
     "\023DeleteBlockResponse\022\016\n\006status\030\001 \001(\005\022\017\n\007"
-    "message\030\002 \001(\t2\352\001\n\017DataNodeService\022G\n\nWri"
-    "teBlock\022\032.minitfs.WriteBlockRequest\032\033.mi"
-    "nitfs.WriteBlockResponse(\001\022D\n\tReadBlock\022"
-    "\031.minitfs.ReadBlockRequest\032\032.minitfs.Rea"
-    "dBlockResponse0\001\022H\n\013DeleteBlock\022\033.minitf"
-    "s.DeleteBlockRequest\032\034.minitfs.DeleteBlo"
-    "ckResponseb\006proto3"
+    "message\030\002 \001(\t\"\233\001\n\020CopyBlockRequest\022\020\n\010bl"
+    "ock_id\030\001 \001(\004\022\017\n\007file_id\030\002 \001(\004\022\032\n\022source_"
+    "datanode_ip\030\003 \001(\t\022\034\n\024source_datanode_por"
+    "t\030\004 \001(\005\022\025\n\rsource_offset\030\005 \001(\003\022\023\n\013source"
+    "_size\030\006 \001(\003\"a\n\021CopyBlockResponse\022\016\n\006stat"
+    "us\030\001 \001(\005\022\017\n\007message\030\002 \001(\t\022\016\n\006offset\030\003 \001("
+    "\003\022\014\n\004size\030\004 \001(\003\022\r\n\005crc32\030\005 \001(\r2\256\002\n\017DataN"
+    "odeService\022G\n\nWriteBlock\022\032.minitfs.Write"
+    "BlockRequest\032\033.minitfs.WriteBlockRespons"
+    "e(\001\022D\n\tReadBlock\022\031.minitfs.ReadBlockRequ"
+    "est\032\032.minitfs.ReadBlockResponse0\001\022H\n\013Del"
+    "eteBlock\022\033.minitfs.DeleteBlockRequest\032\034."
+    "minitfs.DeleteBlockResponse\022B\n\tCopyBlock"
+    "\022\031.minitfs.CopyBlockRequest\032\032.minitfs.Co"
+    "pyBlockResponseb\006proto3"
 };
 static ::absl::once_flag descriptor_table_datanode_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_datanode_2eproto = {
     false,
     false,
-    738,
+    1063,
     descriptor_table_protodef_datanode_2eproto,
     "datanode.proto",
     &descriptor_table_datanode_2eproto_once,
     nullptr,
     0,
-    6,
+    8,
     schemas,
     file_default_instances,
     TableStruct_datanode_2eproto::offsets,
@@ -2381,6 +2484,832 @@ void DeleteBlockResponse::InternalSwap(DeleteBlockResponse* PROTOBUF_RESTRICT PR
 }
 
 ::google::protobuf::Metadata DeleteBlockResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CopyBlockRequest::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<CopyBlockRequest>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_._has_bits_);
+};
+
+CopyBlockRequest::CopyBlockRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, CopyBlockRequest_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:minitfs.CopyBlockRequest)
+}
+PROTOBUF_NDEBUG_INLINE CopyBlockRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    const ::minitfs::CopyBlockRequest& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        source_datanode_ip_(arena, from.source_datanode_ip_) {}
+
+CopyBlockRequest::CopyBlockRequest(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const CopyBlockRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, CopyBlockRequest_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CopyBlockRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, block_id_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, block_id_),
+           offsetof(Impl_, source_datanode_port_) -
+               offsetof(Impl_, block_id_) +
+               sizeof(Impl_::source_datanode_port_));
+
+  // @@protoc_insertion_point(copy_constructor:minitfs.CopyBlockRequest)
+}
+PROTOBUF_NDEBUG_INLINE CopyBlockRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        source_datanode_ip_(arena) {}
+
+inline void CopyBlockRequest::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, block_id_),
+           0,
+           offsetof(Impl_, source_datanode_port_) -
+               offsetof(Impl_, block_id_) +
+               sizeof(Impl_::source_datanode_port_));
+}
+CopyBlockRequest::~CopyBlockRequest() {
+  // @@protoc_insertion_point(destructor:minitfs.CopyBlockRequest)
+  SharedDtor(*this);
+}
+inline void CopyBlockRequest::SharedDtor(MessageLite& self) {
+  CopyBlockRequest& this_ = static_cast<CopyBlockRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.source_datanode_ip_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL CopyBlockRequest::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) CopyBlockRequest(arena);
+}
+constexpr auto CopyBlockRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(CopyBlockRequest),
+                                            alignof(CopyBlockRequest));
+}
+constexpr auto CopyBlockRequest::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_CopyBlockRequest_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &CopyBlockRequest::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<CopyBlockRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &CopyBlockRequest::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<CopyBlockRequest>(), &CopyBlockRequest::ByteSizeLong,
+              &CopyBlockRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_._cached_size_),
+          false,
+      },
+      &CopyBlockRequest::kDescriptorMethods,
+      &descriptor_table_datanode_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull CopyBlockRequest_class_data_ =
+        CopyBlockRequest::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+CopyBlockRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&CopyBlockRequest_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(CopyBlockRequest_class_data_.tc_table);
+  return CopyBlockRequest_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 6, 0, 51, 2>
+CopyBlockRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    6, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967232,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    6,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    CopyBlockRequest_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::minitfs::CopyBlockRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // uint64 block_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(CopyBlockRequest, _impl_.block_id_), 1>(),
+     {8, 1, 0, PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.block_id_)}},
+    // uint64 file_id = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(CopyBlockRequest, _impl_.file_id_), 2>(),
+     {16, 2, 0, PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.file_id_)}},
+    // string source_datanode_ip = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 0, 0, PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.source_datanode_ip_)}},
+    // int32 source_datanode_port = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CopyBlockRequest, _impl_.source_datanode_port_), 5>(),
+     {32, 5, 0, PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.source_datanode_port_)}},
+    // int64 source_offset = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(CopyBlockRequest, _impl_.source_offset_), 3>(),
+     {40, 3, 0, PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.source_offset_)}},
+    // int64 source_size = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(CopyBlockRequest, _impl_.source_size_), 4>(),
+     {48, 4, 0, PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.source_size_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 block_id = 1;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.block_id_), _Internal::kHasBitsOffset + 1, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUInt64)},
+    // uint64 file_id = 2;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.file_id_), _Internal::kHasBitsOffset + 2, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUInt64)},
+    // string source_datanode_ip = 3;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.source_datanode_ip_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 source_datanode_port = 4;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.source_datanode_port_), _Internal::kHasBitsOffset + 5, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int64 source_offset = 5;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.source_offset_), _Internal::kHasBitsOffset + 3, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int64 source_size = 6;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.source_size_), _Internal::kHasBitsOffset + 4, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+  }},
+  // no aux_entries
+  {{
+    "\30\0\0\22\0\0\0\0"
+    "minitfs.CopyBlockRequest"
+    "source_datanode_ip"
+  }},
+};
+PROTOBUF_NOINLINE void CopyBlockRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:minitfs.CopyBlockRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    _impl_.source_datanode_ip_.ClearNonDefaultToEmpty();
+  }
+  if ((cached_has_bits & 0x0000003eu) != 0) {
+    ::memset(&_impl_.block_id_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.source_datanode_port_) -
+        reinterpret_cast<char*>(&_impl_.block_id_)) + sizeof(_impl_.source_datanode_port_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL CopyBlockRequest::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const CopyBlockRequest& this_ = static_cast<const CopyBlockRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL CopyBlockRequest::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const CopyBlockRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(serialize_to_array_start:minitfs.CopyBlockRequest)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // uint64 block_id = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
+    if (this_._internal_block_id() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+          1, this_._internal_block_id(), target);
+    }
+  }
+
+  // uint64 file_id = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000004u) != 0) {
+    if (this_._internal_file_id() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+          2, this_._internal_file_id(), target);
+    }
+  }
+
+  // string source_datanode_ip = 3;
+  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    if (!this_._internal_source_datanode_ip().empty()) {
+      const ::std::string& _s = this_._internal_source_datanode_ip();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "minitfs.CopyBlockRequest.source_datanode_ip");
+      target = stream->WriteStringMaybeAliased(3, _s, target);
+    }
+  }
+
+  // int32 source_datanode_port = 4;
+  if ((this_._impl_._has_bits_[0] & 0x00000020u) != 0) {
+    if (this_._internal_source_datanode_port() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<4>(
+              stream, this_._internal_source_datanode_port(), target);
+    }
+  }
+
+  // int64 source_offset = 5;
+  if ((this_._impl_._has_bits_[0] & 0x00000008u) != 0) {
+    if (this_._internal_source_offset() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<5>(
+              stream, this_._internal_source_offset(), target);
+    }
+  }
+
+  // int64 source_size = 6;
+  if ((this_._impl_._has_bits_[0] & 0x00000010u) != 0) {
+    if (this_._internal_source_size() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<6>(
+              stream, this_._internal_source_size(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:minitfs.CopyBlockRequest)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t CopyBlockRequest::ByteSizeLong(const MessageLite& base) {
+  const CopyBlockRequest& this_ = static_cast<const CopyBlockRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t CopyBlockRequest::ByteSizeLong() const {
+  const CopyBlockRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:minitfs.CopyBlockRequest)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x0000003fu) != 0) {
+    // string source_datanode_ip = 3;
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!this_._internal_source_datanode_ip().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_source_datanode_ip());
+      }
+    }
+    // uint64 block_id = 1;
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (this_._internal_block_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+            this_._internal_block_id());
+      }
+    }
+    // uint64 file_id = 2;
+    if ((cached_has_bits & 0x00000004u) != 0) {
+      if (this_._internal_file_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+            this_._internal_file_id());
+      }
+    }
+    // int64 source_offset = 5;
+    if ((cached_has_bits & 0x00000008u) != 0) {
+      if (this_._internal_source_offset() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_source_offset());
+      }
+    }
+    // int64 source_size = 6;
+    if ((cached_has_bits & 0x00000010u) != 0) {
+      if (this_._internal_source_size() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_source_size());
+      }
+    }
+    // int32 source_datanode_port = 4;
+    if ((cached_has_bits & 0x00000020u) != 0) {
+      if (this_._internal_source_datanode_port() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_source_datanode_port());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void CopyBlockRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<CopyBlockRequest*>(&to_msg);
+  auto& from = static_cast<const CopyBlockRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:minitfs.CopyBlockRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x0000003fu) != 0) {
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!from._internal_source_datanode_ip().empty()) {
+        _this->_internal_set_source_datanode_ip(from._internal_source_datanode_ip());
+      } else {
+        if (_this->_impl_.source_datanode_ip_.IsDefault()) {
+          _this->_internal_set_source_datanode_ip("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (from._internal_block_id() != 0) {
+        _this->_impl_.block_id_ = from._impl_.block_id_;
+      }
+    }
+    if ((cached_has_bits & 0x00000004u) != 0) {
+      if (from._internal_file_id() != 0) {
+        _this->_impl_.file_id_ = from._impl_.file_id_;
+      }
+    }
+    if ((cached_has_bits & 0x00000008u) != 0) {
+      if (from._internal_source_offset() != 0) {
+        _this->_impl_.source_offset_ = from._impl_.source_offset_;
+      }
+    }
+    if ((cached_has_bits & 0x00000010u) != 0) {
+      if (from._internal_source_size() != 0) {
+        _this->_impl_.source_size_ = from._impl_.source_size_;
+      }
+    }
+    if ((cached_has_bits & 0x00000020u) != 0) {
+      if (from._internal_source_datanode_port() != 0) {
+        _this->_impl_.source_datanode_port_ = from._impl_.source_datanode_port_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CopyBlockRequest::CopyFrom(const CopyBlockRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:minitfs.CopyBlockRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void CopyBlockRequest::InternalSwap(CopyBlockRequest* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.source_datanode_ip_, &other->_impl_.source_datanode_ip_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.source_datanode_port_)
+      + sizeof(CopyBlockRequest::_impl_.source_datanode_port_)
+      - PROTOBUF_FIELD_OFFSET(CopyBlockRequest, _impl_.block_id_)>(
+          reinterpret_cast<char*>(&_impl_.block_id_),
+          reinterpret_cast<char*>(&other->_impl_.block_id_));
+}
+
+::google::protobuf::Metadata CopyBlockRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class CopyBlockResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<CopyBlockResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_._has_bits_);
+};
+
+CopyBlockResponse::CopyBlockResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, CopyBlockResponse_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:minitfs.CopyBlockResponse)
+}
+PROTOBUF_NDEBUG_INLINE CopyBlockResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    const ::minitfs::CopyBlockResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        message_(arena, from.message_) {}
+
+CopyBlockResponse::CopyBlockResponse(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const CopyBlockResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, CopyBlockResponse_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  CopyBlockResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, offset_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, offset_),
+           offsetof(Impl_, size_) -
+               offsetof(Impl_, offset_) +
+               sizeof(Impl_::size_));
+
+  // @@protoc_insertion_point(copy_constructor:minitfs.CopyBlockResponse)
+}
+PROTOBUF_NDEBUG_INLINE CopyBlockResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        message_(arena) {}
+
+inline void CopyBlockResponse::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, offset_),
+           0,
+           offsetof(Impl_, size_) -
+               offsetof(Impl_, offset_) +
+               sizeof(Impl_::size_));
+}
+CopyBlockResponse::~CopyBlockResponse() {
+  // @@protoc_insertion_point(destructor:minitfs.CopyBlockResponse)
+  SharedDtor(*this);
+}
+inline void CopyBlockResponse::SharedDtor(MessageLite& self) {
+  CopyBlockResponse& this_ = static_cast<CopyBlockResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.message_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL CopyBlockResponse::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) CopyBlockResponse(arena);
+}
+constexpr auto CopyBlockResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(CopyBlockResponse),
+                                            alignof(CopyBlockResponse));
+}
+constexpr auto CopyBlockResponse::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_CopyBlockResponse_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &CopyBlockResponse::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<CopyBlockResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &CopyBlockResponse::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<CopyBlockResponse>(), &CopyBlockResponse::ByteSizeLong,
+              &CopyBlockResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_._cached_size_),
+          false,
+      },
+      &CopyBlockResponse::kDescriptorMethods,
+      &descriptor_table_datanode_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull CopyBlockResponse_class_data_ =
+        CopyBlockResponse::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+CopyBlockResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&CopyBlockResponse_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(CopyBlockResponse_class_data_.tc_table);
+  return CopyBlockResponse_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 0, 41, 2>
+CopyBlockResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    5, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    CopyBlockResponse_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::minitfs::CopyBlockResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // int32 status = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CopyBlockResponse, _impl_.status_), 2>(),
+     {8, 2, 0, PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.status_)}},
+    // string message = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 0, 0, PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.message_)}},
+    // int64 offset = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(CopyBlockResponse, _impl_.offset_), 1>(),
+     {24, 1, 0, PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.offset_)}},
+    // int64 size = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(CopyBlockResponse, _impl_.size_), 4>(),
+     {32, 4, 0, PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.size_)}},
+    // uint32 crc32 = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(CopyBlockResponse, _impl_.crc32_), 3>(),
+     {40, 3, 0, PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.crc32_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 status = 1;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.status_), _Internal::kHasBitsOffset + 2, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // string message = 2;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.message_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int64 offset = 3;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.offset_), _Internal::kHasBitsOffset + 1, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // int64 size = 4;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.size_), _Internal::kHasBitsOffset + 4, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt64)},
+    // uint32 crc32 = 5;
+    {PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.crc32_), _Internal::kHasBitsOffset + 3, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+    "\31\0\7\0\0\0\0\0"
+    "minitfs.CopyBlockResponse"
+    "message"
+  }},
+};
+PROTOBUF_NOINLINE void CopyBlockResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:minitfs.CopyBlockResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    _impl_.message_.ClearNonDefaultToEmpty();
+  }
+  if ((cached_has_bits & 0x0000001eu) != 0) {
+    ::memset(&_impl_.offset_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.size_) -
+        reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.size_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL CopyBlockResponse::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const CopyBlockResponse& this_ = static_cast<const CopyBlockResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL CopyBlockResponse::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const CopyBlockResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(serialize_to_array_start:minitfs.CopyBlockResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 status = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000004u) != 0) {
+    if (this_._internal_status() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_status(), target);
+    }
+  }
+
+  // string message = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    if (!this_._internal_message().empty()) {
+      const ::std::string& _s = this_._internal_message();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "minitfs.CopyBlockResponse.message");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  // int64 offset = 3;
+  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
+    if (this_._internal_offset() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<3>(
+              stream, this_._internal_offset(), target);
+    }
+  }
+
+  // int64 size = 4;
+  if ((this_._impl_._has_bits_[0] & 0x00000010u) != 0) {
+    if (this_._internal_size() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt64ToArrayWithField<4>(
+              stream, this_._internal_size(), target);
+    }
+  }
+
+  // uint32 crc32 = 5;
+  if ((this_._impl_._has_bits_[0] & 0x00000008u) != 0) {
+    if (this_._internal_crc32() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+          5, this_._internal_crc32(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:minitfs.CopyBlockResponse)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t CopyBlockResponse::ByteSizeLong(const MessageLite& base) {
+  const CopyBlockResponse& this_ = static_cast<const CopyBlockResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t CopyBlockResponse::ByteSizeLong() const {
+  const CopyBlockResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:minitfs.CopyBlockResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x0000001fu) != 0) {
+    // string message = 2;
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!this_._internal_message().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_message());
+      }
+    }
+    // int64 offset = 3;
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (this_._internal_offset() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_offset());
+      }
+    }
+    // int32 status = 1;
+    if ((cached_has_bits & 0x00000004u) != 0) {
+      if (this_._internal_status() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_status());
+      }
+    }
+    // uint32 crc32 = 5;
+    if ((cached_has_bits & 0x00000008u) != 0) {
+      if (this_._internal_crc32() != 0) {
+        total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+            this_._internal_crc32());
+      }
+    }
+    // int64 size = 4;
+    if ((cached_has_bits & 0x00000010u) != 0) {
+      if (this_._internal_size() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(
+            this_._internal_size());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void CopyBlockResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<CopyBlockResponse*>(&to_msg);
+  auto& from = static_cast<const CopyBlockResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:minitfs.CopyBlockResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x0000001fu) != 0) {
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!from._internal_message().empty()) {
+        _this->_internal_set_message(from._internal_message());
+      } else {
+        if (_this->_impl_.message_.IsDefault()) {
+          _this->_internal_set_message("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (from._internal_offset() != 0) {
+        _this->_impl_.offset_ = from._impl_.offset_;
+      }
+    }
+    if ((cached_has_bits & 0x00000004u) != 0) {
+      if (from._internal_status() != 0) {
+        _this->_impl_.status_ = from._impl_.status_;
+      }
+    }
+    if ((cached_has_bits & 0x00000008u) != 0) {
+      if (from._internal_crc32() != 0) {
+        _this->_impl_.crc32_ = from._impl_.crc32_;
+      }
+    }
+    if ((cached_has_bits & 0x00000010u) != 0) {
+      if (from._internal_size() != 0) {
+        _this->_impl_.size_ = from._impl_.size_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CopyBlockResponse::CopyFrom(const CopyBlockResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:minitfs.CopyBlockResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void CopyBlockResponse::InternalSwap(CopyBlockResponse* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_, &other->_impl_.message_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.size_)
+      + sizeof(CopyBlockResponse::_impl_.size_)
+      - PROTOBUF_FIELD_OFFSET(CopyBlockResponse, _impl_.offset_)>(
+          reinterpret_cast<char*>(&_impl_.offset_),
+          reinterpret_cast<char*>(&other->_impl_.offset_));
+}
+
+::google::protobuf::Metadata CopyBlockResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

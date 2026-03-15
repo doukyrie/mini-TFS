@@ -50,6 +50,10 @@ public:
                              const DeleteBlockRequest* req,
                              DeleteBlockResponse* resp) override;
 
+    grpc::Status CopyBlock(grpc::ServerContext* ctx,
+                           const CopyBlockRequest* req,
+                           CopyBlockResponse* resp) override;
+
     // 启动心跳后台线程
     void start_heartbeat();
 

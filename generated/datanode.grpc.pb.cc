@@ -26,6 +26,7 @@ static const char* DataNodeService_method_names[] = {
   "/minitfs.DataNodeService/WriteBlock",
   "/minitfs.DataNodeService/ReadBlock",
   "/minitfs.DataNodeService/DeleteBlock",
+  "/minitfs.DataNodeService/CopyBlock",
 };
 
 std::unique_ptr< DataNodeService::Stub> DataNodeService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -38,6 +39,7 @@ DataNodeService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& ch
   : channel_(channel), rpcmethod_WriteBlock_(DataNodeService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::CLIENT_STREAMING, channel)
   , rpcmethod_ReadBlock_(DataNodeService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_DeleteBlock_(DataNodeService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CopyBlock_(DataNodeService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::ClientWriter< ::minitfs::WriteBlockRequest>* DataNodeService::Stub::WriteBlockRaw(::grpc::ClientContext* context, ::minitfs::WriteBlockResponse* response) {
@@ -95,6 +97,29 @@ void DataNodeService::Stub::async::DeleteBlock(::grpc::ClientContext* context, c
   return result;
 }
 
+::grpc::Status DataNodeService::Stub::CopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::minitfs::CopyBlockResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::minitfs::CopyBlockRequest, ::minitfs::CopyBlockResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CopyBlock_, context, request, response);
+}
+
+void DataNodeService::Stub::async::CopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest* request, ::minitfs::CopyBlockResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::minitfs::CopyBlockRequest, ::minitfs::CopyBlockResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CopyBlock_, context, request, response, std::move(f));
+}
+
+void DataNodeService::Stub::async::CopyBlock(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest* request, ::minitfs::CopyBlockResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CopyBlock_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::minitfs::CopyBlockResponse>* DataNodeService::Stub::PrepareAsyncCopyBlockRaw(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::minitfs::CopyBlockResponse, ::minitfs::CopyBlockRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CopyBlock_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::minitfs::CopyBlockResponse>* DataNodeService::Stub::AsyncCopyBlockRaw(::grpc::ClientContext* context, const ::minitfs::CopyBlockRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCopyBlockRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 DataNodeService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       DataNodeService_method_names[0],
@@ -126,6 +151,16 @@ DataNodeService::Service::Service() {
              ::minitfs::DeleteBlockResponse* resp) {
                return service->DeleteBlock(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      DataNodeService_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< DataNodeService::Service, ::minitfs::CopyBlockRequest, ::minitfs::CopyBlockResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](DataNodeService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::minitfs::CopyBlockRequest* req,
+             ::minitfs::CopyBlockResponse* resp) {
+               return service->CopyBlock(ctx, req, resp);
+             }, this)));
 }
 
 DataNodeService::Service::~Service() {
@@ -146,6 +181,13 @@ DataNodeService::Service::~Service() {
 }
 
 ::grpc::Status DataNodeService::Service::DeleteBlock(::grpc::ServerContext* context, const ::minitfs::DeleteBlockRequest* request, ::minitfs::DeleteBlockResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status DataNodeService::Service::CopyBlock(::grpc::ServerContext* context, const ::minitfs::CopyBlockRequest* request, ::minitfs::CopyBlockResponse* response) {
   (void) context;
   (void) request;
   (void) response;

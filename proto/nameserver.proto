@@ -74,6 +74,13 @@ message BlockReportResponse {
     string message = 2;
 }
 
+message TriggerRebalanceRequest {}
+message TriggerRebalanceResponse {
+    int32  status     = 1;
+    string message    = 2;
+    int32  task_count = 3;
+}
+
 service NameServerService {
     rpc AllocateBlock    (AllocateBlockRequest)    returns (AllocateBlockResponse);
     rpc GetBlockLocation (GetBlockLocationRequest) returns (GetBlockLocationResponse);
@@ -81,4 +88,5 @@ service NameServerService {
     rpc DeleteFile       (DeleteFileRequest)       returns (DeleteFileResponse);
     rpc Heartbeat        (HeartbeatRequest)        returns (HeartbeatResponse);
     rpc BlockReport      (BlockReportRequest)      returns (BlockReportResponse);
+    rpc TriggerRebalance (TriggerRebalanceRequest) returns (TriggerRebalanceResponse);
 }

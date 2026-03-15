@@ -68,6 +68,16 @@ public:
     void reconcile_block_report(const std::string& datanode_id,
                                  const std::vector<uint64_t>& block_ids);
 
+    // 副本管理（用于 rebalance）
+    void add_replica(uint64_t file_id, const ReplicaLocation& replica);
+    void remove_replica(uint64_t file_id, const std::string& datanode_id);
+
+    // 获取所有文件元数据（用于 rebalance 计算）
+    std::unordered_map<uint64_t, FileLocation> get_all_files();
+
+    // 获取所有存活节点（用于 rebalance 计算）
+    std::vector<DataNodeInfo> get_alive_datanodes();
+
     // 启动/停止心跳超时检测后台线程
     // on_dead: 节点宕机时的回调，参数为宕机节点 id
     void start_dead_detector(std::function<void(const std::string&)> on_dead);

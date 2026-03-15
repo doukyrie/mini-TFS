@@ -29,6 +29,7 @@ static const char* NameServerService_method_names[] = {
   "/minitfs.NameServerService/DeleteFile",
   "/minitfs.NameServerService/Heartbeat",
   "/minitfs.NameServerService/BlockReport",
+  "/minitfs.NameServerService/TriggerRebalance",
 };
 
 std::unique_ptr< NameServerService::Stub> NameServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -44,6 +45,7 @@ NameServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& 
   , rpcmethod_DeleteFile_(NameServerService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_Heartbeat_(NameServerService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_BlockReport_(NameServerService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_TriggerRebalance_(NameServerService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status NameServerService::Stub::AllocateBlock(::grpc::ClientContext* context, const ::minitfs::AllocateBlockRequest& request, ::minitfs::AllocateBlockResponse* response) {
@@ -184,6 +186,29 @@ void NameServerService::Stub::async::BlockReport(::grpc::ClientContext* context,
   return result;
 }
 
+::grpc::Status NameServerService::Stub::TriggerRebalance(::grpc::ClientContext* context, const ::minitfs::TriggerRebalanceRequest& request, ::minitfs::TriggerRebalanceResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::minitfs::TriggerRebalanceRequest, ::minitfs::TriggerRebalanceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_TriggerRebalance_, context, request, response);
+}
+
+void NameServerService::Stub::async::TriggerRebalance(::grpc::ClientContext* context, const ::minitfs::TriggerRebalanceRequest* request, ::minitfs::TriggerRebalanceResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::minitfs::TriggerRebalanceRequest, ::minitfs::TriggerRebalanceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_TriggerRebalance_, context, request, response, std::move(f));
+}
+
+void NameServerService::Stub::async::TriggerRebalance(::grpc::ClientContext* context, const ::minitfs::TriggerRebalanceRequest* request, ::minitfs::TriggerRebalanceResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_TriggerRebalance_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::minitfs::TriggerRebalanceResponse>* NameServerService::Stub::PrepareAsyncTriggerRebalanceRaw(::grpc::ClientContext* context, const ::minitfs::TriggerRebalanceRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::minitfs::TriggerRebalanceResponse, ::minitfs::TriggerRebalanceRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_TriggerRebalance_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::minitfs::TriggerRebalanceResponse>* NameServerService::Stub::AsyncTriggerRebalanceRaw(::grpc::ClientContext* context, const ::minitfs::TriggerRebalanceRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncTriggerRebalanceRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 NameServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       NameServerService_method_names[0],
@@ -245,6 +270,16 @@ NameServerService::Service::Service() {
              ::minitfs::BlockReportResponse* resp) {
                return service->BlockReport(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      NameServerService_method_names[6],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< NameServerService::Service, ::minitfs::TriggerRebalanceRequest, ::minitfs::TriggerRebalanceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](NameServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::minitfs::TriggerRebalanceRequest* req,
+             ::minitfs::TriggerRebalanceResponse* resp) {
+               return service->TriggerRebalance(ctx, req, resp);
+             }, this)));
 }
 
 NameServerService::Service::~Service() {
@@ -286,6 +321,13 @@ NameServerService::Service::~Service() {
 }
 
 ::grpc::Status NameServerService::Service::BlockReport(::grpc::ServerContext* context, const ::minitfs::BlockReportRequest* request, ::minitfs::BlockReportResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status NameServerService::Service::TriggerRebalance(::grpc::ServerContext* context, const ::minitfs::TriggerRebalanceRequest* request, ::minitfs::TriggerRebalanceResponse* response) {
   (void) context;
   (void) request;
   (void) response;

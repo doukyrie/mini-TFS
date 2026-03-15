@@ -2,12 +2,20 @@
 #include <grpcpp/grpcpp.h>
 #include "nameserver.grpc.pb.h"
 #include "block_manager.h"
+#include "rebalance_manager.h"
 
 namespace minitfs {
 
 class NameServerServiceImpl final : public NameServerService::Service {
 public:
-    explicit NameServerServiceImpl(BlockManager& mgr) : mgr_(mgr) {}
+    explicit NameServerServiceImpl(BlockManager& mgr)
+        : mgr_(mgr), rebalance_mgr_(&mgr) {
+        rebalance_mgr_.start();
+    }
+
+    ~NameServerServiceImpl() {
+        rebalance_mgr_.stop();
+    }
 
     grpc::Status AllocateBlock(grpc::ServerContext* ctx,
                                const AllocateBlockRequest* req,
@@ -33,8 +41,13 @@ public:
                              const BlockReportRequest* req,
                              BlockReportResponse* resp) override;
 
+    grpc::Status TriggerRebalance(grpc::ServerContext* ctx,
+                                  const TriggerRebalanceRequest* req,
+                                  TriggerRebalanceResponse* resp) override;
+
 private:
-    BlockManager& mgr_;
+    BlockManager&     mgr_;
+    RebalanceManager  rebalance_mgr_;
 };
 
 } // namespace minitfs

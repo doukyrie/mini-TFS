@@ -26,6 +26,53 @@ namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace minitfs {
 
+inline constexpr TriggerRebalanceResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        message_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        status_{0},
+        task_count_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR TriggerRebalanceResponse::TriggerRebalanceResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(TriggerRebalanceResponse_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct TriggerRebalanceResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR TriggerRebalanceResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TriggerRebalanceResponseDefaultTypeInternal() {}
+  union {
+    TriggerRebalanceResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TriggerRebalanceResponseDefaultTypeInternal _TriggerRebalanceResponse_default_instance_;
+template <typename>
+PROTOBUF_CONSTEXPR TriggerRebalanceRequest::TriggerRebalanceRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(TriggerRebalanceRequest_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
+}
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct TriggerRebalanceRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR TriggerRebalanceRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TriggerRebalanceRequestDefaultTypeInternal() {}
+  union {
+    TriggerRebalanceRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TriggerRebalanceRequestDefaultTypeInternal _TriggerRebalanceRequest_default_instance_;
+
 inline constexpr HeartbeatResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -518,6 +565,16 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::minitfs::BlockReportResponse, _impl_.message_),
         1,
         0,
+        0x000, // bitmap
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::minitfs::TriggerRebalanceResponse, _impl_._has_bits_),
+        6, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::minitfs::TriggerRebalanceResponse, _impl_.status_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::TriggerRebalanceResponse, _impl_.message_),
+        PROTOBUF_FIELD_OFFSET(::minitfs::TriggerRebalanceResponse, _impl_.task_count_),
+        1,
+        0,
+        2,
 };
 
 static const ::_pbi::MigrationSchema
@@ -535,6 +592,8 @@ static const ::_pbi::MigrationSchema
         {92, sizeof(::minitfs::HeartbeatResponse)},
         {99, sizeof(::minitfs::BlockReportRequest)},
         {106, sizeof(::minitfs::BlockReportResponse)},
+        {113, sizeof(::minitfs::TriggerRebalanceRequest)},
+        {114, sizeof(::minitfs::TriggerRebalanceResponse)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::minitfs::_BlockLocation_default_instance_._instance,
@@ -550,6 +609,8 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::minitfs::_HeartbeatResponse_default_instance_._instance,
     &::minitfs::_BlockReportRequest_default_instance_._instance,
     &::minitfs::_BlockReportResponse_default_instance_._instance,
+    &::minitfs::_TriggerRebalanceRequest_default_instance_._instance,
+    &::minitfs::_TriggerRebalanceResponse_default_instance_._instance,
 };
 const char descriptor_table_protodef_nameserver_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -579,31 +640,36 @@ const char descriptor_table_protodef_nameserver_2eproto[] ABSL_ATTRIBUTE_SECTION
     "tatus\030\001 \001(\005\022\017\n\007message\030\002 \001(\t\"<\n\022BlockRep"
     "ortRequest\022\023\n\013datanode_id\030\001 \001(\t\022\021\n\tblock"
     "_ids\030\002 \003(\004\"6\n\023BlockReportResponse\022\016\n\006sta"
-    "tus\030\001 \001(\005\022\017\n\007message\030\002 \001(\t2\330\003\n\021NameServe"
-    "rService\022N\n\rAllocateBlock\022\035.minitfs.Allo"
-    "cateBlockRequest\032\036.minitfs.AllocateBlock"
-    "Response\022W\n\020GetBlockLocation\022 .minitfs.G"
-    "etBlockLocationRequest\032!.minitfs.GetBloc"
-    "kLocationResponse\022E\n\nCommitFile\022\032.minitf"
-    "s.CommitFileRequest\032\033.minitfs.CommitFile"
-    "Response\022E\n\nDeleteFile\022\032.minitfs.DeleteF"
-    "ileRequest\032\033.minitfs.DeleteFileResponse\022"
-    "B\n\tHeartbeat\022\031.minitfs.HeartbeatRequest\032"
-    "\032.minitfs.HeartbeatResponse\022H\n\013BlockRepo"
-    "rt\022\033.minitfs.BlockReportRequest\032\034.minitf"
-    "s.BlockReportResponseb\006proto3"
+    "tus\030\001 \001(\005\022\017\n\007message\030\002 \001(\t\"\031\n\027TriggerReb"
+    "alanceRequest\"O\n\030TriggerRebalanceRespons"
+    "e\022\016\n\006status\030\001 \001(\005\022\017\n\007message\030\002 \001(\t\022\022\n\nta"
+    "sk_count\030\003 \001(\0052\261\004\n\021NameServerService\022N\n\r"
+    "AllocateBlock\022\035.minitfs.AllocateBlockReq"
+    "uest\032\036.minitfs.AllocateBlockResponse\022W\n\020"
+    "GetBlockLocation\022 .minitfs.GetBlockLocat"
+    "ionRequest\032!.minitfs.GetBlockLocationRes"
+    "ponse\022E\n\nCommitFile\022\032.minitfs.CommitFile"
+    "Request\032\033.minitfs.CommitFileResponse\022E\n\n"
+    "DeleteFile\022\032.minitfs.DeleteFileRequest\032\033"
+    ".minitfs.DeleteFileResponse\022B\n\tHeartbeat"
+    "\022\031.minitfs.HeartbeatRequest\032\032.minitfs.He"
+    "artbeatResponse\022H\n\013BlockReport\022\033.minitfs"
+    ".BlockReportRequest\032\034.minitfs.BlockRepor"
+    "tResponse\022W\n\020TriggerRebalance\022 .minitfs."
+    "TriggerRebalanceRequest\032!.minitfs.Trigge"
+    "rRebalanceResponseb\006proto3"
 };
 static ::absl::once_flag descriptor_table_nameserver_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_nameserver_2eproto = {
     false,
     false,
-    1549,
+    1746,
     descriptor_table_protodef_nameserver_2eproto,
     "nameserver.proto",
     &descriptor_table_nameserver_2eproto_once,
     nullptr,
     0,
-    13,
+    15,
     schemas,
     file_default_instances,
     TableStruct_nameserver_2eproto::offsets,
@@ -4839,6 +4905,459 @@ void BlockReportResponse::InternalSwap(BlockReportResponse* PROTOBUF_RESTRICT PR
 }
 
 ::google::protobuf::Metadata BlockReportResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class TriggerRebalanceRequest::_Internal {
+ public:
+};
+
+TriggerRebalanceRequest::TriggerRebalanceRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, TriggerRebalanceRequest_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:minitfs.TriggerRebalanceRequest)
+}
+TriggerRebalanceRequest::TriggerRebalanceRequest(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const TriggerRebalanceRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, TriggerRebalanceRequest_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  TriggerRebalanceRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:minitfs.TriggerRebalanceRequest)
+}
+
+inline void* PROTOBUF_NONNULL TriggerRebalanceRequest::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) TriggerRebalanceRequest(arena);
+}
+constexpr auto TriggerRebalanceRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(TriggerRebalanceRequest),
+                                            alignof(TriggerRebalanceRequest));
+}
+constexpr auto TriggerRebalanceRequest::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_TriggerRebalanceRequest_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &TriggerRebalanceRequest::MergeImpl,
+          ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<TriggerRebalanceRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &TriggerRebalanceRequest::SharedDtor,
+          ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<TriggerRebalanceRequest>(), &TriggerRebalanceRequest::ByteSizeLong,
+              &TriggerRebalanceRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(TriggerRebalanceRequest, _impl_._cached_size_),
+          false,
+      },
+      &TriggerRebalanceRequest::kDescriptorMethods,
+      &descriptor_table_nameserver_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull TriggerRebalanceRequest_class_data_ =
+        TriggerRebalanceRequest::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+TriggerRebalanceRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&TriggerRebalanceRequest_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(TriggerRebalanceRequest_class_data_.tc_table);
+  return TriggerRebalanceRequest_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
+TriggerRebalanceRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    TriggerRebalanceRequest_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::minitfs::TriggerRebalanceRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+::google::protobuf::Metadata TriggerRebalanceRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class TriggerRebalanceResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<TriggerRebalanceResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_._has_bits_);
+};
+
+TriggerRebalanceResponse::TriggerRebalanceResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, TriggerRebalanceResponse_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:minitfs.TriggerRebalanceResponse)
+}
+PROTOBUF_NDEBUG_INLINE TriggerRebalanceResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    const ::minitfs::TriggerRebalanceResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        message_(arena, from.message_) {}
+
+TriggerRebalanceResponse::TriggerRebalanceResponse(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const TriggerRebalanceResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, TriggerRebalanceResponse_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  TriggerRebalanceResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, status_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, status_),
+           offsetof(Impl_, task_count_) -
+               offsetof(Impl_, status_) +
+               sizeof(Impl_::task_count_));
+
+  // @@protoc_insertion_point(copy_constructor:minitfs.TriggerRebalanceResponse)
+}
+PROTOBUF_NDEBUG_INLINE TriggerRebalanceResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        message_(arena) {}
+
+inline void TriggerRebalanceResponse::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, status_),
+           0,
+           offsetof(Impl_, task_count_) -
+               offsetof(Impl_, status_) +
+               sizeof(Impl_::task_count_));
+}
+TriggerRebalanceResponse::~TriggerRebalanceResponse() {
+  // @@protoc_insertion_point(destructor:minitfs.TriggerRebalanceResponse)
+  SharedDtor(*this);
+}
+inline void TriggerRebalanceResponse::SharedDtor(MessageLite& self) {
+  TriggerRebalanceResponse& this_ = static_cast<TriggerRebalanceResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.message_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL TriggerRebalanceResponse::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) TriggerRebalanceResponse(arena);
+}
+constexpr auto TriggerRebalanceResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(TriggerRebalanceResponse),
+                                            alignof(TriggerRebalanceResponse));
+}
+constexpr auto TriggerRebalanceResponse::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_TriggerRebalanceResponse_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &TriggerRebalanceResponse::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<TriggerRebalanceResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &TriggerRebalanceResponse::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<TriggerRebalanceResponse>(), &TriggerRebalanceResponse::ByteSizeLong,
+              &TriggerRebalanceResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_._cached_size_),
+          false,
+      },
+      &TriggerRebalanceResponse::kDescriptorMethods,
+      &descriptor_table_nameserver_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull TriggerRebalanceResponse_class_data_ =
+        TriggerRebalanceResponse::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+TriggerRebalanceResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&TriggerRebalanceResponse_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(TriggerRebalanceResponse_class_data_.tc_table);
+  return TriggerRebalanceResponse_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 48, 2>
+TriggerRebalanceResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    TriggerRebalanceResponse_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::minitfs::TriggerRebalanceResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // int32 status = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(TriggerRebalanceResponse, _impl_.status_), 1>(),
+     {8, 1, 0, PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_.status_)}},
+    // string message = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 0, 0, PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_.message_)}},
+    // int32 task_count = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(TriggerRebalanceResponse, _impl_.task_count_), 2>(),
+     {24, 2, 0, PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_.task_count_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 status = 1;
+    {PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_.status_), _Internal::kHasBitsOffset + 1, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // string message = 2;
+    {PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_.message_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 task_count = 3;
+    {PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_.task_count_), _Internal::kHasBitsOffset + 2, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+    "\40\0\7\0\0\0\0\0"
+    "minitfs.TriggerRebalanceResponse"
+    "message"
+  }},
+};
+PROTOBUF_NOINLINE void TriggerRebalanceResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:minitfs.TriggerRebalanceResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000001u) != 0) {
+    _impl_.message_.ClearNonDefaultToEmpty();
+  }
+  if ((cached_has_bits & 0x00000006u) != 0) {
+    ::memset(&_impl_.status_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.task_count_) -
+        reinterpret_cast<char*>(&_impl_.status_)) + sizeof(_impl_.task_count_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL TriggerRebalanceResponse::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const TriggerRebalanceResponse& this_ = static_cast<const TriggerRebalanceResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL TriggerRebalanceResponse::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const TriggerRebalanceResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(serialize_to_array_start:minitfs.TriggerRebalanceResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 status = 1;
+  if ((this_._impl_._has_bits_[0] & 0x00000002u) != 0) {
+    if (this_._internal_status() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_status(), target);
+    }
+  }
+
+  // string message = 2;
+  if ((this_._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    if (!this_._internal_message().empty()) {
+      const ::std::string& _s = this_._internal_message();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "minitfs.TriggerRebalanceResponse.message");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  // int32 task_count = 3;
+  if ((this_._impl_._has_bits_[0] & 0x00000004u) != 0) {
+    if (this_._internal_task_count() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
+              stream, this_._internal_task_count(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:minitfs.TriggerRebalanceResponse)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t TriggerRebalanceResponse::ByteSizeLong(const MessageLite& base) {
+  const TriggerRebalanceResponse& this_ = static_cast<const TriggerRebalanceResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t TriggerRebalanceResponse::ByteSizeLong() const {
+  const TriggerRebalanceResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:minitfs.TriggerRebalanceResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000007u) != 0) {
+    // string message = 2;
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!this_._internal_message().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_message());
+      }
+    }
+    // int32 status = 1;
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (this_._internal_status() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_status());
+      }
+    }
+    // int32 task_count = 3;
+    if ((cached_has_bits & 0x00000004u) != 0) {
+      if (this_._internal_task_count() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_task_count());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void TriggerRebalanceResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<TriggerRebalanceResponse*>(&to_msg);
+  auto& from = static_cast<const TriggerRebalanceResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:minitfs.TriggerRebalanceResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if ((cached_has_bits & 0x00000007u) != 0) {
+    if ((cached_has_bits & 0x00000001u) != 0) {
+      if (!from._internal_message().empty()) {
+        _this->_internal_set_message(from._internal_message());
+      } else {
+        if (_this->_impl_.message_.IsDefault()) {
+          _this->_internal_set_message("");
+        }
+      }
+    }
+    if ((cached_has_bits & 0x00000002u) != 0) {
+      if (from._internal_status() != 0) {
+        _this->_impl_.status_ = from._impl_.status_;
+      }
+    }
+    if ((cached_has_bits & 0x00000004u) != 0) {
+      if (from._internal_task_count() != 0) {
+        _this->_impl_.task_count_ = from._impl_.task_count_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void TriggerRebalanceResponse::CopyFrom(const TriggerRebalanceResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:minitfs.TriggerRebalanceResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void TriggerRebalanceResponse::InternalSwap(TriggerRebalanceResponse* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_, &other->_impl_.message_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_.task_count_)
+      + sizeof(TriggerRebalanceResponse::_impl_.task_count_)
+      - PROTOBUF_FIELD_OFFSET(TriggerRebalanceResponse, _impl_.status_)>(
+          reinterpret_cast<char*>(&_impl_.status_),
+          reinterpret_cast<char*>(&other->_impl_.status_));
+}
+
+::google::protobuf::Metadata TriggerRebalanceResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
