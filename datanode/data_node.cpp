@@ -34,8 +34,39 @@ DataNodeServiceImpl::~DataNodeServiceImpl() {
     if (heartbeat_thread_.joinable()) heartbeat_thread_.join();
 }
 
+void DataNodeServiceImpl::send_block_report() {
+    BlockReportRequest req;
+    req.set_datanode_id(self_id_);
+
+    // Scan base_path_/index/ for block id files
+    std::string index_dir = base_path_ + "/index";
+    DIR* dir = opendir(index_dir.c_str());
+    if (dir) {
+        struct dirent* entry;
+        while ((entry = readdir(dir)) != nullptr) {
+            if (entry->d_name[0] == '.') continue;
+            try {
+                uint64_t bid = std::stoull(entry->d_name);
+                req.add_block_ids(bid);
+            } catch (...) {}
+        }
+        closedir(dir);
+    }
+
+    grpc::ClientContext ctx;
+    ctx.set_deadline(std::chrono::system_clock::now() + std::chrono::seconds(5));
+    BlockReportResponse resp;
+    auto st = ns_stub_->BlockReport(&ctx, req, &resp);
+    if (!st.ok()) {
+        std::cerr << "[DataNode] BlockReport failed: " << st.error_message() << "\n";
+    } else {
+        std::cout << "[DataNode] BlockReport sent: " << req.block_ids_size() << " blocks\n";
+    }
+}
+
 void DataNodeServiceImpl::start_heartbeat() {
     heartbeat_thread_ = std::thread([this]() {
+        bool reported = false;
         while (running_) {
             HeartbeatRequest req;
             req.set_datanode_id(self_id_);
@@ -59,6 +90,9 @@ void DataNodeServiceImpl::start_heartbeat() {
             auto st = ns_stub_->Heartbeat(&ctx, req, &resp);
             if (!st.ok()) {
                 std::cerr << "[DataNode] heartbeat failed: " << st.error_message() << "\n";
+            } else if (!reported) {
+                reported = true;
+                send_block_report();
             }
             std::this_thread::sleep_for(std::chrono::seconds(10));
         }
@@ -108,25 +142,24 @@ grpc::Status DataNodeServiceImpl::WriteBlock(
     ++active_connections_;
     struct Guard { std::atomic<int32_t>& c; ~Guard(){ --c; } } g{active_connections_};
 
+    // Step 1: Read first chunk to extract block_id / file_id
     WriteBlockRequest req;
-    std::vector<char> buf;
-    uint64_t block_id = 0, file_id = 0;
-
-    while (reader->Read(&req)) {
-        if (block_id == 0) {
-            block_id = req.block_id();
-            file_id  = req.file_id();
-        }
-        const auto& d = req.data();
-        buf.insert(buf.end(), d.begin(), d.end());
-    }
-
-    if (block_id == 0 || buf.empty()) {
+    if (!reader->Read(&req)) {
         resp->set_status(-1);
         resp->set_message("empty request");
         return grpc::Status::OK;
     }
+    uint64_t block_id = req.block_id();
+    uint64_t file_id  = req.file_id();
+    std::vector<char> first_data(req.data().begin(), req.data().end());
 
+    if (block_id == 0) {
+        resp->set_status(-1);
+        resp->set_message("invalid block_id");
+        return grpc::Status::OK;
+    }
+
+    // Step 2: Get/create block context under global lock, then release
     std::shared_ptr<BlockContext> bctx;
     {
         std::lock_guard<std::mutex> lk(mu_);
@@ -138,49 +171,82 @@ grpc::Status DataNodeServiceImpl::WriteBlock(
         return grpc::Status::OK;
     }
 
+    // Step 3: Hold per-block lock for the entire write to prevent offset races
     std::lock_guard<std::mutex> blk_lk(bctx->mu);
 
-    int32_t offset = bctx->index->get_index_header()->data_file_offset;
-    int32_t size   = static_cast<int32_t>(buf.size());
+    // Step 4: Read start_offset from index header
+    int32_t start_offset  = bctx->index->get_index_header()->data_file_offset;
+    int32_t total_written = 0;
+    uLong   running_crc   = crc32(0L, Z_NULL, 0);
 
-    // 计算 CRC32
-    uint32_t crc = static_cast<uint32_t>(
-        crc32(0, reinterpret_cast<const Bytef*>(buf.data()), buf.size()));
+    // Step 5: Write first chunk
+    if (!first_data.empty()) {
+        int ret = bctx->main_block->pwrite_file(
+            first_data.data(), static_cast<int32_t>(first_data.size()),
+            start_offset);
+        if (ret < 0) {
+            resp->set_status(-1);
+            resp->set_message("pwrite_file failed");
+            return grpc::Status::OK;
+        }
+        running_crc = crc32(running_crc,
+            reinterpret_cast<const Bytef*>(first_data.data()), first_data.size());
+        total_written += static_cast<int32_t>(first_data.size());
+    }
 
-    int ret = bctx->main_block->pwrite_file(buf.data(), size, offset);
-    if (ret < 0) {
+    // Step 6: Stream remaining chunks directly to disk
+    while (reader->Read(&req)) {
+        const auto& d = req.data();
+        if (d.empty()) continue;
+        int ret = bctx->main_block->pwrite_file(
+            d.data(), static_cast<int32_t>(d.size()),
+            start_offset + total_written);
+        if (ret < 0) {
+            resp->set_status(-1);
+            resp->set_message("pwrite_file failed");
+            return grpc::Status::OK;
+        }
+        running_crc = crc32(running_crc,
+            reinterpret_cast<const Bytef*>(d.data()), d.size());
+        total_written += static_cast<int32_t>(d.size());
+    }
+
+    if (total_written == 0) {
         resp->set_status(-1);
-        resp->set_message("pwrite_file failed");
+        resp->set_message("no data written");
         return grpc::Status::OK;
     }
 
-    // 写索引
+    uint32_t crc = static_cast<uint32_t>(running_crc);
+
+    // Step 7: Write index MetaInfo with final CRC32
     qiniu::largefile::MetaInfo meta;
     meta.set_file_id(file_id);
-    meta.set_offset(offset);
-    meta.set_size(size);
+    meta.set_offset(start_offset);
+    meta.set_size(total_written);
     meta.set_crc32(crc);
 
-    ret = bctx->index->write_segment_meta(meta.get_key(), meta);
+    int ret = bctx->index->write_segment_meta(meta.get_key(), meta);
     if (ret < 0) {
         resp->set_status(-1);
         resp->set_message("write_segment_meta failed");
         return grpc::Status::OK;
     }
 
-    bctx->index->set_index_header_offset(size);
-    bctx->index->update_block_info(qiniu::largefile::C_OPER_INSERT, size);
+    // Step 8: Update index header and flush
+    bctx->index->set_index_header_offset(total_written);
+    bctx->index->update_block_info(qiniu::largefile::C_OPER_INSERT, total_written);
     bctx->index->flush();
 
     resp->set_status(0);
     resp->set_message("ok");
-    resp->set_offset(offset);
-    resp->set_size(size);
+    resp->set_offset(start_offset);
+    resp->set_size(total_written);
     resp->set_crc32(crc);
 
     std::cout << "[DataNode] WriteBlock: block=" << block_id
               << " file=" << file_id
-              << " offset=" << offset << " size=" << size << "\n";
+              << " offset=" << start_offset << " size=" << total_written << "\n";
     return grpc::Status::OK;
 }
 

@@ -110,6 +110,28 @@ DataNodeInfo* BlockManager::get_datanode(const std::string& id) {
     return &it->second;
 }
 
+void BlockManager::reconcile_block_report(const std::string& datanode_id,
+                                           const std::vector<uint64_t>& block_ids) {
+    std::unordered_set<uint64_t> reported(block_ids.begin(), block_ids.end());
+    std::lock_guard<std::mutex> lk(mu_);
+    for (auto& [file_id, loc] : file_map_) {
+        auto& replicas = loc.replicas;
+        auto it = replicas.begin();
+        while (it != replicas.end()) {
+            if (it->datanode_id == datanode_id &&
+                reported.find(loc.block_id) == reported.end()) {
+                std::cerr << "[NameServer] BlockReport: removed stale replica"
+                          << " file=" << file_id
+                          << " block=" << loc.block_id
+                          << " datanode=" << datanode_id << "\n";
+                it = replicas.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+}
+
 void BlockManager::start_dead_detector(
         std::function<void(const std::string&)> on_dead) {
     detector_running_ = true;

@@ -134,8 +134,11 @@ grpc::Status NameServerServiceImpl::BlockReport(
         grpc::ServerContext*, const BlockReportRequest* req,
         BlockReportResponse* resp) {
 
+    std::vector<uint64_t> ids(req->block_ids().begin(), req->block_ids().end());
+    mgr_.reconcile_block_report(req->datanode_id(), ids);
+
     std::cout << "[NameServer] BlockReport from " << req->datanode_id()
-              << ": " << req->block_ids_size() << " blocks\n";
+              << ": " << ids.size() << " blocks\n";
     resp->set_status(0);
     resp->set_message("ok");
     return grpc::Status::OK;

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <mutex>
 #include <chrono>
 #include <vector>
@@ -62,6 +63,10 @@ public:
     bool get_file_location(uint64_t file_id, FileLocation& loc);
     bool remove_file(uint64_t file_id, FileLocation& loc);
     DataNodeInfo* get_datanode(const std::string& id);
+
+    // 对账 BlockReport：移除 datanode_id 上已不存在的副本
+    void reconcile_block_report(const std::string& datanode_id,
+                                 const std::vector<uint64_t>& block_ids);
 
     // 启动/停止心跳超时检测后台线程
     // on_dead: 节点宕机时的回调，参数为宕机节点 id

@@ -13,6 +13,7 @@
 #include "../storage/index_handle.h"
 #include <thread>
 #include <atomic>
+#include <dirent.h>
 
 namespace minitfs {
 
@@ -51,6 +52,9 @@ public:
 
     // 启动心跳后台线程
     void start_heartbeat();
+
+    // 向 NameServer 上报本节点持有的所有 block
+    void send_block_report();
 
 private:
     std::shared_ptr<BlockContext> get_or_create_block(uint64_t block_id);
